@@ -1,0 +1,24 @@
+<h3>Where have I been?</h3>
+<form action="/" method="POST">
+  <input type="hidden" name="latitude" value="" /> 
+  <input type="hidden" name="longitude" value="" />
+  <button type="submit" class="btn btn-primary btn-lg" disabled>Check In!</button>
+</form>
+
+{{#if error}}
+  <p class="text-warning">{{error}}</p>
+{{/if}} 
+{{#if location}}
+  <p>The browser says you are at <strong>{{location.latitude}}, {{location.longitude}}</strong>.</p>
+  <p>This lat/lon seems to equate to:</p>
+  <blockquote>{{location.address}}</blockquote>
+{{/if}}
+
+{{#if breadcrumbs}}
+<h4>You appear to have also checked in at:</h4>
+<ul>
+  {{#each breadcrumbs}}
+    <li>({{date}}): we visited {{address}}</li>
+  {{/each}}
+</ul>
+{{/if}}
