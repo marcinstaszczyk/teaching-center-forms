@@ -1,18 +1,17 @@
-///<reference path='./node_modules/typescript.api/decl/node.d.ts' />
+///<reference path='./express.d.ts' />
+///<reference path='./node.d.ts' />
 
+import express = require('express');
+import http = require('http');
+import path = require('path');
 
-export function startServer() {
+export function startServer() { 
 
   /**
    * Module dependencies.
    */
-  
-  var express = require('express');
-  var routes = require('./routes');
-  var user = require('./routes/user');
-  var http = require('http');
-  var path = require('path');
-  var db = require("./src/db");
+   
+  var db = require("./src/db.ts");
   
   var exphbs  = require('express3-handlebars');
   
@@ -20,6 +19,7 @@ export function startServer() {
   
   // all environments
   app.set('port', process.env.PORT || 3000);
+  //app.set('port', "3000");
   app.set('views', __dirname + '/views');
   //app.set('view engine', 'jade');
   
@@ -38,15 +38,8 @@ export function startServer() {
     app.use(express.errorHandler());
   } 
   
-  //zmiana do zakomitowania
-  
-  //app.get('/', routes.index);
-  //app.get('/users', user.list);
-  //app.get('/', function (req, res) {
-  //  res.render('home');
-  //});
-  app.get('/', require('./routes/index'));
-  app.post('/', require('./routes/index_post'));
+  app.get('/', require('./routes/index.ts'));
+  app.post('/', require('./routes/index_post.ts'));
   
   // Initialize the database before starting the server.
   db.init(function(err) {
