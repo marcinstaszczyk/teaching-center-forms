@@ -7,7 +7,10 @@ export var Breadcrumb = null;
 
 // Callback will be called when done.
 export function init(done) {
-  orm.connect(process.env.DATABASE_URL || "postgres://postgres:postgres@localhost/postgres", function(err, db) {
+  var url: String = process.env.DATABASE_URL || "postgres://postgres:postgres@localhost:5432/postgres";
+  url = url.replace(":5432", "");
+  
+  orm.connect(url, function(err, db) {
     
     if (err) {
       console.log("Error connecting to DB: " + err);
