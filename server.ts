@@ -3,8 +3,6 @@
 ///<reference path='./src/db.ts' />
 
 import express = require('express');
-import http = require('http');
-import path = require('path');
 import db = require("./src/db");
 
 export function startServer() { 
@@ -12,8 +10,8 @@ export function startServer() {
   /**
    * Module dependencies.
    */
-   
-  
+  var http = require('http');
+  var path = require('path');
   var exphbs  = require('express3-handlebars');
   
   var app = express();
