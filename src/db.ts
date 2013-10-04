@@ -1,10 +1,10 @@
 var orm = require("orm");
 
 // Will be set on init, null == not set.
-module.exports.Breadcrumb = null;
+export var Breadcrumb = null;
 
 // Callback will be called when done.
-module.exports.init = function(done) {
+export function init(done) {
   orm.connect("sqlite://breadcrumbs.db3", function(err, db) {
     var Breadcrumb = db.define("breadcrumb", {
       date : Date,

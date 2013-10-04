@@ -1,5 +1,7 @@
+///<reference path='../src/db.ts' />
+
+import db = require("../src/db");
 var request = require("request");
-var db = require("../src/db.ts");
 var index = require("./index");
 
 // Proxy through YQL.
@@ -41,7 +43,7 @@ var revgeo = function(lat, lon, callback) {
   });
 };
 
-module.exports = function(req, res) {
+export function go(req, res) {
   var latitude = req.body.latitude;
   var longitude = req.body.longitude;
 
