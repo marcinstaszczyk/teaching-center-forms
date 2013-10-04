@@ -8,7 +8,11 @@ export var Breadcrumb = null;
 // Callback will be called when done.
 export function init(done) {
   orm.connect(process.env.DATABASE_URL || "postgres://postgres:postgres@localhost/postgres", function(err, db) {
-
+    
+    if (err) {
+      console.log("Error connecting to DB: " + err);
+    }
+    
     var Breadcrumb = db.define("breadcrumb", {
       date : Date,
       latitude : Number,
