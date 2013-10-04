@@ -15,7 +15,7 @@
     "express3-handlebars": "~0.5.0",
     "request": "~2.27.0",
     "orm": "~2.1.2",
-    "sqlite3": "~2.1.17",
-    "typescript.api": "~0.7.7"
+    "typescript.api": "~0.7.7",
+    "pg": "~2.5.0"
   }
 }

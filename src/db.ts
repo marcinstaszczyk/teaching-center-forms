@@ -1,3 +1,5 @@
+///<reference path='../node.d.ts' />
+
 var orm = require("orm");
 
 // Will be set on init, null == not set.
@@ -5,7 +7,8 @@ export var Breadcrumb = null;
 
 // Callback will be called when done.
 export function init(done) {
-  orm.connect("sqlite://breadcrumbs.db3", function(err, db) {
+  orm.connect(process.env.DATABASE_URL || "postgres://postgres:postgres@localhost/postgres", function(err, db) {
+
     var Breadcrumb = db.define("breadcrumb", {
       date : Date,
       latitude : Number,
