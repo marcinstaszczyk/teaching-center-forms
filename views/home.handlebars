@@ -1,9 +1,21 @@
-<h3>Where have I been?</h3>
-<form action="/" method="POST">
-  <input type="hidden" name="latitude" value="" /> 
-  <input type="hidden" name="longitude" value="" />
-  <button type="submit" class="btn btn-primary btn-lg" disabled>Check In!</button>
-</form>
+
+<style type="text/css">
+input, select, textarea {
+  width: 100%;
+}
+input#hours {
+  width: 50px;
+}
+input#payment, input#startDate {
+  width: 100px;
+}
+select#type, select#owner {
+  width: 300px;
+}
+input#send {
+  width: auto;
+}
+</style>
 
 {{#if error}}
   <p class="text-warning">{{error}}</p>
@@ -14,11 +26,76 @@
   <blockquote>{{location.address}}</blockquote>
 {{/if}}
 
-{{#if breadcrumbs}}
-<h4>You appear to have also checked in at:</h4>
-<ul>
-  {{#each breadcrumbs}}
-    <li>({{date}}): we visited {{address}}</li>
-  {{/each}}
-</ul>
-{{/if}}
+
+
+<form action="/" method="POST">
+  <table><tbody>
+    <tr>
+      <td><label for="area">Obszar tematyczny: </label></td>
+      <td><select id="area">
+        <option value=""></option>
+        {{#each sAreas}}
+          <optgroup label="{{this.name}}">
+            {{#each this.sub}}
+              <option value="{{this}}">{{this}}</option>
+            {{/each}}
+          </optgroup>
+        {{/each}}
+      </select></td>
+    </tr>
+    <tr>
+      <td><label for="name">Nazwa formy: </label></td>
+      <td><input id="name" type="text"/></td>
+    </tr>
+    <tr>
+      <td><label for="scope">Zakres szkolenia: </label></td>
+      <td><textarea id="scope" rows="7"></textarea></td>
+    </tr>
+    <tr>
+      <td><label for="target">Adresaci: </label></td>
+      <td><input id="target" type="text"/></td>
+    </tr>
+    <tr>
+      <td><label for="type">Forma zajęć: </label></td>
+      <td><select id="type">
+        <option value=""></option>
+        {{#each sTypes}}
+          <option value="{{this}}">{{this}}</option>
+        {{/each}}
+      </select></td>
+    </tr>
+    <tr>
+      <td><label for="hours">Liczba godzin: </label></td>
+      <td><input id="hours" type="text"/></td>
+    </tr>
+    <tr>
+      <td><label for="startDate">Termin realizacji: </label></td>
+      <td><input id="startDate" type="date"/></td>
+    </tr>
+    <tr>
+      <td><label for="owner">Kierownik szkolenia: </label></td>
+      <td><select id="owner">
+        <option value=""></option>
+        {{#each sOwners}}
+          <option value="{{this}}">{{this}}</option>
+        {{/each}}
+      </select></td>
+    </tr>
+    <tr>
+      <td><label for="teacher">Prowadzący: </label></td>
+      <td><input id="teacher" type="text"/></td>
+    </tr>
+    <tr>
+      <td><label for="payment">Odpłatność: </label></td>
+      <td><input id="payment" type="text"/></td>
+    </tr>
+    <tr>
+      <td><label for="addInfo">Informacje dodatkowe: </label></td>
+      <td><textarea id="addInfo" rows="7"></textarea></td>
+    </tr>
+  </tbody></table>
+  
+  <br/>
+  <button type="submit" class="btn btn-primary btn-large" disabled>Wyślij</button>
+</form>
+

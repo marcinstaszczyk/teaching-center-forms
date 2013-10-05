@@ -28,7 +28,7 @@ var revgeo = function(lat, lon, callback) {
       callback("Error contacting the reverse geocoding service.");
     } else {
       // Save an address.
-      db.Breadcrumb.create([ {
+      db.CENForm.create([ {
         date : new Date(),
         latitude : lat,
         longitude : lon,
