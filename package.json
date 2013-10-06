@@ -15,6 +15,7 @@
     "request": "~2.27.0",
     "orm": "~2.1.2",
     "typescript.api": "~0.7.7",
-    "pg": "~2.5.0"
+    "pg": "~2.5.0",
+    "express-validator": "~0.8.0"
   }
 }

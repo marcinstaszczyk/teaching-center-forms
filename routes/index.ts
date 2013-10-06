@@ -1,15 +1,17 @@
 var db = require("../src/db");
 
-var sAreas = null;
-var sTypes = null;
-var sOwners = null;
+export var sAreas = null;
+export var sAreasSimple = null;
+export var sTypes = null;
+export var sOwners = null;
 
-module.exports = function(req, res) {
+export function go(req, res) {
   if (sOwners) {
     afterItemsLoaded(req, res);
   } else {
     db.sAreas.find(function(err, items) {
       var tmpAreas = [];
+      var tmpAreasSimple = [];
       var lastGroup : Array = null;
       for (var i = 0; i < items.length; ++i) {
         if (items[i].group) {
@@ -17,9 +19,11 @@ module.exports = function(req, res) {
           tmpAreas.push({ name: items[i].name, sub: lastGroup});
         } else {
           lastGroup.push(items[i].name);
+          tmpAreasSimple.push(items[i].name);
         }
       }
       sAreas = tmpAreas;
+      sAreasSimple = tmpAreasSimple;
       
       
       db.sTypes.find(function(err, items) {

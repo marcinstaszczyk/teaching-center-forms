@@ -1,53 +1,90 @@
 ///<reference path='../src/db.ts' />
+///<reference path='../express-validator.d.ts' />
+///<reference path='./index.ts' />
 
 import db = require("../src/db");
-var request = require("request");
+import expressValidator = require('express-validator');
 var index = require("./index");
+var util = require('util');
 
-// Proxy through YQL.
-var whereURL = 'http://query.yahooapis.com/v1/public/yql?format=json&q=select * from geo.placefinder where gflags="R" and text="{LAT},{LON}"';
 
-// express extends the Node concept of request/response HTTP architecture,
-// but also keeps true to the basic idea.
-var revgeo = function(lat, lon, callback) {
-  var url = whereURL.replace("{LAT}", lat).replace("{LON}", lon);
+export function go(req: ExpressValidator.RequestValidation, res) {
 
-  request(url, function(error, response, contentBody) {
-    // Attempt to build the interpoloated address, or fail.
-    var address;
-    try {
-      address = JSON.parse(contentBody).query.results.Result;
-      address = Array.isArray(address) ? address[0] : address;
-      address = address.line1 + " " + address.line2;
-    } catch (e) {
-      callback("Could not retrieve the location at " + lat + ", " + lon);
-      return;
+  var body = (<any>req).body;
+  req.onValidationError(function(msg: String)  {throw new Error;});
+  
+  //TODO wpisać HTML (XSS, HTML)
+  try {
+    req.assert('area', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('area', 'Wartość jest niepoprawna').isIn(index.sAreasSimple);
+  } catch (e) {}
+  try {
+    req.assert('name', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('name', 'Pole może mieć maksymalnie 130 znaków').len(0, 130);
+  } catch (e) {}
+  try {
+    req.assert('scope', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('scope', 'Pole może mieć maksymalnie 250 znaków').len(0, 250);
+  } catch (e) {}
+  try {
+    req.assert('target', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('target', 'Pole może mieć maksymalnie 70 znaków').len(0, 70);
+  } catch (e) {}
+  try {
+    req.assert('type', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('type', 'Wartość jest niepoprawna').isIn(index.sTypes);
+  } catch (e) {}
+  try {
+    req.assert('hours', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('hours', 'Pole musi być liczbą całkowitą').isInt();
+    req.assert('hours', 'Maksymalna wartość to 168').max('168');
+  } catch (e) {}
+  try {
+    req.assert('startDate', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('startDate', 'Niepoprawny format daty').regex(/^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/);
+    var dateParts = body.startDate.split('-');
+    var date= new Date(dateParts[0], dateParts[1]-1, dateParts[2]);
+    if (date.getTime() < new Date().getTime()) {
+      req.assert('startDate', 'Zbyt wczesna data').isNull();//Trik
     }
-
-    if (error || response.statusCode != 200) {
-      callback("Error contacting the reverse geocoding service.");
-    } else {
-      // Save an address.
-      db.CENForm.create([ {
-        date : new Date(),
-        latitude : lat,
-        longitude : lon,
-        address : address
-      } ], function(err, items) {
-        // err - description of the error or null
-        // items - array of inserted items
-        // Pass back both err and address at this point.
-        callback(err, address);
-      });
+    var maxDate = new Date();
+    maxDate.setFullYear(2014);
+    if (date.getTime() > maxDate.getTime()) {
+      req.assert('startDate', 'Zbyt późna data').isNull();//Trik
     }
-  });
-};
+  } catch (e) {}
+  try {
+    req.assert('owner', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('owner', 'Wartość jest niepoprawna').isIn(index.sOwners);
+  } catch (e) {}
+  try {
+    req.assert('teacher', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('teacher', 'Pole może mieć maksymalnie 70 znaków').len(0, 70);
+  } catch (e) {}
+  try {
+    req.assert('payment', 'Wypłenienie pola jest wymagane').notNull();
+    req.assert('payment', 'Pole musi być liczbą całkowitą').isInt();
+    req.assert('payment', 'Maksymalna wartość to 100000').max('100000');
+    //TODO grosze :)
+  } catch (e) {}
+  try {
+    req.assert('addInfo', 'Pole może mieć maksymalnie 250 znaków').len(0, 250);
+  } catch (e) {}
+  
+  var errors = req.validationErrors(true);
+  if (errors) {
+    //res.send('There have been validation errors: ' + util.inspect(errors), 400);
+    res.locals.validationErrors = errors; 
+    res.locals.form = body
+    //res.locals.formString = util.inspect(res.locals.form);
+  }
+  index.go(req, res);
+  //res.send('OK', 400);
+  
+  //var latitude = req.body.latitude;
+  //var longitude = req.body.longitude;
 
-export function go(req, res) {
-  var latitude = req.body.latitude;
-  var longitude = req.body.longitude;
-
-  revgeo(latitude, longitude, function(err, address) {
+  /*revgeo(latitude, longitude, function(err, address) {
     // diagnostic
     console.log(latitude, longitude, err, address);
 
@@ -58,5 +95,5 @@ export function go(req, res) {
       };
     
     index(req, res);
-  });
+  });*/
 };
