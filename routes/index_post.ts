@@ -52,6 +52,7 @@ export function go(req: ExpressValidator.RequestValidation, res) {
     if (date.getTime() > maxDate.getTime()) {
       req.assert('startDate', 'Zbyt późna data').isNull();//Trik
     }
+    res.locals.startDateConverted = date;
   } catch (e) {}
   try {
     req.assert('owner', 'Wypłenienie pola jest wymagane').notNull();
@@ -77,23 +78,30 @@ export function go(req: ExpressValidator.RequestValidation, res) {
     res.locals.validationErrors = errors; 
     res.locals.form = body
     //res.locals.formString = util.inspect(res.locals.form);
+    index.go(req, res);
+  } else {
+    /*var form = {
+      area,
+      name,
+      scope,
+      target,
+      type,
+      hours,
+      startDate,
+      owner,
+      teacher,
+      payment
+    }*/
+    var form = JSON.parse(JSON.stringify(body));
+    form.startDate = res.locals.startDateConverted;
+    db.CENForm.create([form], function(err, items) {
+      // err - description of the error or null
+      // items - array of inserted items
+      res.locals.error = err;
+      if (!err) {
+        res.locals.message = 'Forma została dodana';
+      }
+      index.go(req, res);
+    });
   }
-  index.go(req, res);
-  //res.send('OK', 400);
-  
-  //var latitude = req.body.latitude;
-  //var longitude = req.body.longitude;
-
-  /*revgeo(latitude, longitude, function(err, address) {
-    // diagnostic
-    console.log(latitude, longitude, err, address);
-
-    res.locals.location = {
-        latitude : latitude,
-        longitude : longitude,
-        address : address
-      };
-    
-    index(req, res);
-  });*/
 };
