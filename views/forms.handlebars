@@ -1,0 +1,54 @@
+
+<style type="text/css">
+
+</style>
+
+{{#if error}}
+  <p class="text-warning">{{error}}</p>
+{{/if}} 
+
+{{#if message}}
+  <h2 class="text-warning">{{message}}</h2>
+{{/if}} 
+  
+<a href="./">Wróć do wypełniania</a>
+
+<div class="formsContainer">
+{{#each CENForms}}
+  <!-- border="1" cellspacing="0" cellpadding="0"  -->
+  <table class="table table-stripped table-hover table-bordered table-condensed"><tbody>
+    <tr>
+      <td>FD-{{id}}</td>
+      <td colspan="3">{{name}}</td>
+    </tr>
+    <tr>
+      <td>{{type}}</td>
+      <td>Liczba godzin dyd.: {{hours}}</td>
+      <td>Termin: {{startDate}} r.</td>
+      <td>{{payment}} PLN</td><!-- formatowanie liczby -->
+    </tr>
+    <tr>
+      <td>Zakres szkolenia</td>
+      <td colspan="3">{{scope}}</td>
+    </tr>
+    <tr>
+      <td>Adresaci</td>
+      <td colspan="3">{{target}}</td>
+    </tr>
+    <tr>
+      <td>Prowadzący</td>
+      <td colspan="3">{{teacher}} TODO łączyć z Kierownikiem jeśli taki sam</td>
+    </tr>
+    <tr>
+      <td>Kierownik</td>
+      <td colspan="3">{{owner}}</td>
+    </tr>
+    <tr>
+      <td>Uwagi</td>
+      <td colspan="3">{{addInfo}}</td>
+    </tr>
+  </tbody></table>
+  <br/>
+{{/each}}
+</div>
+

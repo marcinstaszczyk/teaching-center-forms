@@ -1,8 +1,22 @@
 body {
-  padding: 50px;
+  padding: 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00B7FF;
+}
+
+
+table.table-bordered tr td {
+  border-top: 1px solid #DDDDDD;
+}
+
+div.formsContainer {
+	width: 800px;
+}
+
+div.formsContainer table tr td:FIRST-CHILD {
+	width: 10%;
+	white-space:nowrap;
 }

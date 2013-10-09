@@ -48,6 +48,7 @@ export function startServer() {
   
   app.get('/', require('./routes/index.ts').go);
   app.post('/', require('./routes/index_post.ts').go);
+  app.get('/forms', require('./routes/forms.ts').go);
   
   // Initialize the database before starting the server.
   db.init(function(err) {

@@ -44,7 +44,7 @@ export function init(done) {
       startDate : { type: "date", time: false },
       owner     : { type: "text", size: 255 },
       teacher   : { type: "text", size: 255 },
-      hours     : { type: "number" },
+      payment   : { type: "number" },
       addInfo   : { type: "text", size: 2048 },
     });
 
@@ -52,7 +52,7 @@ export function init(done) {
     sAreas.sync(function(err) {});
     sTypes.sync(function(err) {});
     sOwners.sync(function(err) {});
-    db.sync(function(err) {});
+    CENForm.sync(function(err) {});
     
     // Export our object for basic interactions.
     module.exports.sAreas = sAreas;

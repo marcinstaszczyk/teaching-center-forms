@@ -100,7 +100,15 @@ export function go(req: ExpressValidator.RequestValidation, res) {
       res.locals.error = err;
       if (!err) {
         res.locals.message = 'Forma została dodana';
+        res.locals.savedForms = items;
+        for(var i = 0; i < items.length; ++i) {
+          var item = items[i];
+          var startDate: Date = item.startDate;
+          item.startDate = startDate.getFullYear() + "-" + (startDate.getMonth()+1) + "-" + startDate.getDate();
+        }
+      } else {
       }
+      
       index.go(req, res);
     });
   }
