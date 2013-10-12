@@ -3,6 +3,7 @@
 ///<reference path='./index.ts' />
 
 import db = require("../src/db");
+import dao = require("../src/dao");
 import expressValidator = require('express-validator');
 var index = require("./index");
 var util = require('util');
@@ -10,13 +11,14 @@ var util = require('util');
 
 export function go(req: ExpressValidator.RequestValidation, res) {
 
+dao.getDictionaries(function (dicts) {
   var body = (<any>req).body;
   req.onValidationError(function(msg: String)  {throw new Error;});
   
   //TODO wpisać HTML (XSS, HTML)
   try {
     req.assert('area', 'Wypłenienie pola jest wymagane').notNull();
-    req.assert('area', 'Wartość jest niepoprawna').isIn(index.sAreasSimple);
+    req.assert('area', 'Wartość jest niepoprawna').isIn(dicts.sAreasSimple);
   } catch (e) {}
   try {
     req.assert('name', 'Wypłenienie pola jest wymagane').notNull();
@@ -32,7 +34,7 @@ export function go(req: ExpressValidator.RequestValidation, res) {
   } catch (e) {}
   try {
     req.assert('type', 'Wypłenienie pola jest wymagane').notNull();
-    req.assert('type', 'Wartość jest niepoprawna').isIn(index.sTypes);
+    req.assert('type', 'Wartość jest niepoprawna').isIn(dicts.sTypes);
   } catch (e) {}
   try {
     req.assert('hours', 'Wypłenienie pola jest wymagane').notNull();
@@ -56,7 +58,7 @@ export function go(req: ExpressValidator.RequestValidation, res) {
   } catch (e) {}
   try {
     req.assert('owner', 'Wypłenienie pola jest wymagane').notNull();
-    req.assert('owner', 'Wartość jest niepoprawna').isIn(index.sOwners);
+    req.assert('owner', 'Wartość jest niepoprawna').isIn(dicts.sOwners);
   } catch (e) {}
   try {
     req.assert('teacher', 'Wypłenienie pola jest wymagane').notNull();
@@ -80,18 +82,6 @@ export function go(req: ExpressValidator.RequestValidation, res) {
     //res.locals.formString = util.inspect(res.locals.form);
     index.go(req, res);
   } else {
-    /*var form = {
-      area,
-      name,
-      scope,
-      target,
-      type,
-      hours,
-      startDate,
-      owner,
-      teacher,
-      payment
-    }*/
     var form = JSON.parse(JSON.stringify(body));
     form.startDate = res.locals.startDateConverted;
     db.CENForm.create([form], function(err, items) {
@@ -112,4 +102,5 @@ export function go(req: ExpressValidator.RequestValidation, res) {
       index.go(req, res);
     });
   }
+});
 };

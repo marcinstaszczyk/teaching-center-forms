@@ -21,20 +21,20 @@ export function init(done) {
       return;
     }
     
-    var sAreas = db.define("s_areas", {
+    sAreas = db.define("s_areas", {
       name      : { type: "text", size: 255 },
       group     : Boolean
     });
     
-    var sTypes = db.define("s_types", {
+    sTypes = db.define("s_types", {
       name      : { type: "text", size: 255 },
     });
     
-    var sOwners = db.define("s_owners", {
+    sOwners = db.define("s_owners", {
       name      : { type: "text", size: 255 },
     });
     
-    var CENForm = db.define("cen_form", {
+    CENForm = db.define("cen_form", {
       area      : { type: "text", size: 255 },
       name      : { type: "text", size: 255 },
       scope     : { type: "text", size: 255 },

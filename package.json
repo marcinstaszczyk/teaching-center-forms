@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "supervisor -e ts,js,html node app.js",
+    "start_old": "node app.js"
   },
   "engines": {
     "node": "0.10.17",
@@ -16,6 +17,8 @@
     "orm": "~2.1.2",
     "typescript.api": "~0.7.7",
     "pg": "~2.5.0",
-    "express-validator": "~0.8.0"
+    "express-validator": "~0.8.0",
+    "reload": "~0.1.0",
+    "colors": "~0.6.2"
   }
 }

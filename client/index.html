@@ -1,0 +1,32 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEN Froms</title>
+
+<link rel='stylesheet' href='/vendor/bootstrap-2.3.2/css/bootstrap.css' media="screen"/>
+<link rel='stylesheet' href="/vendor/bootstrap-2.3.2/css/bootstrap-responsive.css" media="screen"/>
+<link rel="stylesheet" href="/css/style.css" media="screen">
+
+<script src="/reload/reload.js"></script>
+<script src="/vendor/angularjs-1.0.8/angular.min.js"></script>
+<script src="/vendor/angularjs-1.0.8/angular-resource.min.js"></script>
+<script src="/js/controllers.js"></script>
+<script src="/js/app.js"></script>
+
+<title>CEN Forms</title>
+
+Jeśli widzisz ten teskt, to znaczy, że używasz przestarzałej przeglądarki lub wyłączyłeś JavaScript<br/>
+<a href="/form">Przejdz do wersji nie korzystającej z JavaScript</a>
+<br/>
+<br/>
+
+<div data-ng-app="CENForms">
+  <input type="text" data-ng-model="data"/>
+  <h3>{{data}}</h3>
+  <div data-ng-view>
+    <!-- partial will go here -->
+  </div>
+</div>
+
+
+

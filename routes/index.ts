@@ -1,58 +1,12 @@
 var db = require("../src/db");
-
-export var sAreas = null;
-export var sAreasSimple = null;
-export var sTypes = null;
-export var sOwners = null;
+var dao = require("../src/dao");
 
 export function go(req, res) {
-  if (sOwners) {
-    afterItemsLoaded(req, res);
-  } else {
-    db.sAreas.find(function(err, items) {
-      var tmpAreas = [];
-      var tmpAreasSimple = [];
-      var lastGroup: Array = null;
-      for (var i = 0; i < items.length; ++i) {
-        if (items[i].group) {
-          lastGroup = [];
-          tmpAreas.push({ name: items[i].name, sub: lastGroup });
-        } else {
-          lastGroup.push(items[i].name);
-          tmpAreasSimple.push(items[i].name);
-        }
-      }
-      sAreas = tmpAreas;
-      sAreasSimple = tmpAreasSimple;
-
-
-      db.sTypes.find(function(err, items) {
-        var tmpTypes = [];
-        for (var i = 0; i < items.length; ++i) {
-          tmpTypes[i] = items[i].name;
-        }
-        sTypes = tmpTypes;
-
-
-        db.sOwners.find(function(err, items) {
-          var tmpOwners = [];
-          for (var i = 0; i < items.length; ++i) {
-            tmpOwners[i] = items[i].name;
-          }
-          sOwners = tmpOwners;
-
-
-          afterItemsLoaded(req, res);
-        });
-      });
-    });
-  }
+  dao.getDictionaries(function (dicts) {
+    res.locals.sAreas = dicts.sAreas;
+    res.locals.sTypes = dicts.sTypes;
+    res.locals.sOwners = dicts.sOwners;
+  
+    res.render('home');
+  });
 };
-
-function afterItemsLoaded(req, res) {
-  res.locals.sAreas = sAreas;
-  res.locals.sTypes = sTypes;
-  res.locals.sOwners = sOwners;
-
-  res.render('home');
-}

@@ -1,92 +1,14 @@
-
-<style type="text/css">
-input, select, textarea {
-  width: 100%;
-}
-input#hours {
-  width: 50px;
-}
-input#payment, input#startDate {
-  width: 100px;
-}
-select#type, select#owner {
-  width: 300px;
-}
-input#send {
-  width: auto;
-}
-table td {
-  vertical-align: top;
-}
-td label {
-  padding-top: 5px;
-}
-td.vError {
-  color: red;
-  padding-left: 20px;
-  padding-top: 7px;
-}
-</style>
-
-<div class="formsContainer" style="float: right;">
-  {{#if message}}
-    <h2 class="text-success">{{message}}</h2>
-  {{/if}}
-  
-  {{#each savedForms}}
-    <!-- border="1" cellspacing="0" cellpadding="0"  -->
-    <table class="table table-stripped table-hover table-bordered table-condensed"><tbody>
-      <tr>
-        <td>FD-{{id}}</td>
-        <td colspan="3">{{name}}</td>
-      </tr>
-      <tr>
-        <td>{{type}}</td>
-        <td>Liczba godzin dyd.: {{hours}}</td>
-        <td>Termin: {{startDate}} r.</td>
-        <td>{{payment}} PLN</td><!-- formatowanie liczby -->
-      </tr>
-      <tr>
-        <td>Zakres szkolenia</td>
-        <td colspan="3">{{scope}}</td>
-      </tr>
-      <tr>
-        <td>Adresaci</td>
-        <td colspan="3">{{target}}</td>
-      </tr>
-      <tr>
-        <td>Prowadzący</td>
-        <td colspan="3">{{teacher}} TODO łączyć z Kierownikiem jeśli taki sam</td>
-      </tr>
-      <tr>
-        <td>Kierownik</td>
-        <td colspan="3">{{owner}}</td>
-      </tr>
-      <tr>
-        <td>Uwagi</td>
-        <td colspan="3">{{addInfo}}</td>
-      </tr>
-    </tbody></table>
-    <br/>
-  {{/each}}
-</div>
-
-{{#if error}}
-  <p class="text-error">{{error}}</p>
-{{/if}} 
-
-
-<form action="/form" method="POST">
+<form name="form" class="form-horizontal">
   <table><tbody>
     <tr>
       <td><label for="area">Obszar tematyczny: </label></td>
       <td><select id="area" name="area">
         <option value=""></option>
-        {{#each sAreas}}
+        { {#each sAreas}}
           <optgroup label="{{name}}">
-            {{{options_selected sub ../form.area}}}
+            { { {options_selected sub ../form.area}}}
           </optgroup>
-        {{/each}}
+        { {/each}}
       </select></td>
       <td class="vError">{{validationErrors.area.msg}}</td>
     </tr>
@@ -109,7 +31,7 @@ td.vError {
       <td><label for="type">Forma zajęć: </label></td>
       <td><select id="type" name="type">
         <option value=""></option>
-        {{{options_selected sTypes form.type}}}
+        { { {options_selected sTypes form.type}}}
       </select></td>
       <td class="vError">{{validationErrors.type.msg}}</td>
     </tr>
@@ -127,7 +49,7 @@ td.vError {
       <td><label for="owner">Kierownik szkolenia: </label></td>
       <td><select id="owner" name="owner">
         <option value=""></option>
-        {{{options_selected sOwners form.owner}}}
+        { { {options_selected sOwners form.owner}}}
       </select></td>
       <td class="vError">{{validationErrors.owner.msg}}</td>
     </tr>
@@ -153,4 +75,5 @@ td.vError {
   
   <a href="/forms_list">Zobacz już wprowadzone formy</a>
 </form>
+
 
