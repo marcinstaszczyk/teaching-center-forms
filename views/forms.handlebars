@@ -16,7 +16,7 @@
 <div class="formsContainer">
 {{#each CENForms}}
   <!-- border="1" cellspacing="0" cellpadding="0"  -->
-  <table class="table table-stripped table-hover table-bordered table-condensed"><tbody>
+  <table class="forms table table-stripped table-hover table-bordered table-condensed"><tbody>
     <tr>
       <td>FD-{{id}}</td>
       <td colspan="3">{{name}}</td>
@@ -29,7 +29,7 @@
     </tr>
     <tr>
       <td>Zakres szkolenia</td>
-      <td colspan="3">{{scope}}</td>
+      <td colspan="3" class="pre">{{scope}}</td>
     </tr>
     <tr>
       <td>Adresaci</td>
@@ -45,7 +45,7 @@
     </tr>
     <tr>
       <td>Uwagi</td>
-      <td colspan="3">{{addInfo}}</td>
+      <td colspan="3" class="pre">{{addInfo}}</td>
     </tr>
   </tbody></table>
   <br/>

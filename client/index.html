@@ -15,14 +15,15 @@
 
 <title>CEN Forms</title>
 
-Jeśli widzisz ten teskt, to znaczy, że używasz przestarzałej przeglądarki lub wyłączyłeś JavaScript<br/>
-<a href="/form">Przejdz do wersji nie korzystającej z JavaScript</a>
-<br/>
-<br/>
 
 <div data-ng-app="CENForms">
-  <input type="text" data-ng-model="data"/>
-  <h3>{{data}}</h3>
+  <div data-ng-hide="true">
+    Jeśli widzisz ten teskt, to znaczy, że używasz przestarzałej przeglądarki lub wyłączyłeś JavaScript<br/>
+    <a href="/form">Przejdz do wersji nie korzystającej z JavaScript</a>
+  </div>
+  
+<!--   <input type="text" data-ng-model="data"/> -->
+<!--   <h3>{{data}}</h3> -->
   <div data-ng-view>
     <!-- partial will go here -->
   </div>

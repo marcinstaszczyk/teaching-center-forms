@@ -12,11 +12,21 @@ table.table-bordered tr td {
   border-top: 1px solid #DDDDDD;
 }
 
-div.formsContainer {
-	width: 800px;
+.form-horizontal .control-group {
+	margin-bottom: 5px;
+}
+.form-horizontal .control-group:after {
+  clear: none;
 }
 
-div.formsContainer table tr td:FIRST-CHILD {
-	width: 10%;
-	white-space:nowrap;
+.pre {
+  white-space: pre
+}
+
+table.forms {
+	width: 800px;
+}
+table.forms tr td:FIRST-CHILD {
+  width: 10%;
+  white-space:nowrap;
 }

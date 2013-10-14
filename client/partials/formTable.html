@@ -1,0 +1,39 @@
+
+<div data-ng-show="showarea">
+  Obszar: {{formdata.area}}
+</div>
+<!-- border="1" cellspacing="0" cellpadding="0"  -->
+<table class="forms table table-stripped table-hover table-bordered table-condensed"><tbody>
+  <tr>
+    <td>FD-{{formdata.id}}</td>
+    <td colspan="3">{{formdata.name}}</td>
+  </tr>
+  <tr>
+    <td>{{formdata.type}}</td>
+    <td>Liczba godzin dyd.: {{formdata.hours}}</td>
+    <td>Termin: {{formdata.startDate}} r.</td>
+    <td>{{formdata.payment}} PLN</td><!-- formatowanie liczby -->
+  </tr>
+  <tr>
+    <td>Zakres szkolenia</td>
+    <td colspan="3" class="pre">{{formdata.scope}}</td>
+  </tr>
+  <tr>
+    <td>Adresaci</td>
+    <td colspan="3">{{formdata.target}}</td>
+  </tr>
+  <tr>
+    <td>Prowadzący</td>
+    <td colspan="3">{{formdata.teacher}}</td>
+  </tr>
+  <tr>
+    <td>Kierownik</td>
+    <td colspan="3">{{formdata.owner}}</td>
+  </tr>
+  <tr>
+    <td>Uwagi</td>
+    <td colspan="3" class="pre">{{formdata.addInfo}}</td>
+  </tr>
+</tbody></table>
+
+

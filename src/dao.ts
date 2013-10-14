@@ -27,7 +27,7 @@ export function getDictionaries(done) {
         }
 
 
-        db.sOwners.find(function(err, items) {
+        db.sOwners.find(["name"], function(err, items) {
           for (var i = 0; i < items.length; ++i) {
             dicts.sOwners[i] = items[i].name;
           }
@@ -41,7 +41,12 @@ export function getDictionaries(done) {
   }
 }
 
-export function getForms(done) {
+export var forms = {
+  list: formList,
+  get: getForm
+};
+
+function formList(done) {
   db.CENForm.find(function(err, items) {
     for(var i = 0; i < items.length; ++i) {
       var item = items[i];
@@ -52,3 +57,11 @@ export function getForms(done) {
     done(err, items);
   });
 }
+
+function getForm(id, done) {
+  db.CENForm.get(id, function(err, item) {
+    done(err, item);
+  });
+}
+
+

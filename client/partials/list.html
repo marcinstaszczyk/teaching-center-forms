@@ -1,50 +1,22 @@
 <div class="btn-toolbar">
   <div class="btn-group">
-    <a class="btn btn-large" href="/new">New</a>
+    <a class="btn btn-large" href="#/new">New</a>
   </div>
   <div class="btn-group">
-    <a class="btn btn-large" href="/edit/{{selectedId}}" data-ng-class="{disabled: index < 0}">Edit</a>
+    <a class="btn btn-large" href="#/edit/{{formId}}" data-ng-class="{disabled: index < 0}">Edit</a>
   </div>
   <div class="btn-group">
     <a class="btn btn-large btn-danger" data-ng-click="delete()" data-ng-class="{disabled: index < 0}">Delete</a>
   </div>
+  <div class="btn-group">
+    <a class="btn btn-large" data-ng-click="toggleArea()">{{showArea && 'Ukryj' || "Pokaż"}} obszar</a>
+  </div>
 </div>
 
 <div class="formsContainer">
+  
   <div data-ng-repeat="f in forms" data-ng-click="select($index)" data-ng-class="{'info': $index == index}">
-    <!-- border="1" cellspacing="0" cellpadding="0"  -->
-    <table class="table table-stripped table-hover table-bordered table-condensed"><tbody>
-      <tr>
-        <td>FD-{{f.id}}</td>
-        <td colspan="3">{{f.name}}</td>
-      </tr>
-      <tr>
-        <td>{{f.type}}</td>
-        <td>Liczba godzin dyd.: {{f.hours}}</td>
-        <td>Termin: {{f.startDate}} r.</td>
-        <td>{{f.payment}} PLN</td><!-- formatowanie liczby -->
-      </tr>
-      <tr>
-        <td>Zakres szkolenia</td>
-        <td colspan="3">{{f.scope}}</td>
-      </tr>
-      <tr>
-        <td>Adresaci</td>
-        <td colspan="3">{{f.target}}</td>
-      </tr>
-      <tr>
-        <td>Prowadzący</td>
-        <td colspan="3">{{f.teacher}}</td>
-      </tr>
-      <tr>
-        <td>Kierownik</td>
-        <td colspan="3">{{f.owner}}</td>
-      </tr>
-      <tr>
-        <td>Uwagi</td>
-        <td colspan="3">{{f.addInfo}}</td>
-      </tr>
-    </tbody></table>
+    <formtable formdata="f" showarea="showArea"></formtable>
   </div>
 </div>
 

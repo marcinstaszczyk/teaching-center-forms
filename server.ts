@@ -52,7 +52,8 @@ export function startServer() {
   app.post('/form', require('./routes/index_post.ts').go);
   app.get ('/forms_list', require('./routes/forms.ts').go);
   
-  app.get ('/api/forms', api.formsList);
+  app.get ('/api/forms', api.forms.list);
+  app.get ('/api/forms/:id', api.forms.get);
   app.get ('/api/dictionaries', api.dictionaries);
   
   app.get('/', function(req, res) {

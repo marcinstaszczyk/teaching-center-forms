@@ -1,79 +1,60 @@
+<style type="text/css">
+input, textarea {
+  width: 500px;
+}
+select {
+  width: auto;
+}
+input#hours {
+  width: 50px;
+}
+input#payment, input#startDate {
+  width: 100px;
+}
+/*select#type, select#owner {
+  width: 300px;
+}*/
+td.vError {
+  color: red;
+  padding-left: 20px;
+  padding-top: 7px;
+}
+</style>
+
+<div style="float: right;">
+  <h3>Podgląd</h3>
+  <formtable formdata="formData" showarea="true"></formtable>
+</div>
+
+<div>
 <form name="form" class="form-horizontal">
-  <table><tbody>
-    <tr>
-      <td><label for="area">Obszar tematyczny: </label></td>
-      <td><select id="area" name="area">
-        <option value=""></option>
-        { {#each sAreas}}
-          <optgroup label="{{name}}">
-            { { {options_selected sub ../form.area}}}
-          </optgroup>
-        { {/each}}
-      </select></td>
-      <td class="vError">{{validationErrors.area.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="name">Nazwa formy: </label></td>
-      <td><input id="name" name="name" type="text" value="{{form.name}}"/></td>
-      <td class="vError">{{validationErrors.name.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="scope">Zakres szkolenia: </label></td>
-      <td><textarea id="scope" name="scope" rows="7">{{form.scope}}</textarea></td>
-      <td class="vError">{{validationErrors.scope.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="target">Adresaci: </label></td>
-      <td><input id="target" name="target" type="text" value="{{form.target}}"/></td>
-      <td class="vError">{{validationErrors.target.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="type">Forma zajęć: </label></td>
-      <td><select id="type" name="type">
-        <option value=""></option>
-        { { {options_selected sTypes form.type}}}
-      </select></td>
-      <td class="vError">{{validationErrors.type.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="hours">Liczba godzin: </label></td>
-      <td><input id="hours" name="hours" type="text" value="{{form.hours}}"/></td>
-      <td class="vError">{{validationErrors.hours.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="startDate">Termin realizacji: </label></td>
-      <td><input id="startDate" name="startDate" type="date" value="{{form.startDate}}"/></td>
-      <td class="vError">{{validationErrors.startDate.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="owner">Kierownik szkolenia: </label></td>
-      <td><select id="owner" name="owner">
-        <option value=""></option>
-        { { {options_selected sOwners form.owner}}}
-      </select></td>
-      <td class="vError">{{validationErrors.owner.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="teacher">Prowadzący: </label></td>
-      <td><input id="teacher" name="teacher" type="text" value="{{form.teacher}}"/></td>
-      <td class="vError">{{validationErrors.teacher.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="payment">Odpłatność: </label></td>
-      <td><input id="payment" name="payment" type="text" value="{{form.payment}}"/></td>
-      <td class="vError">{{validationErrors.payment.msg}}</td>
-    </tr>
-    <tr>
-      <td><label for="addInfo">Informacje dodatkowe: </label></td>
-      <td><textarea id="addInfo" name="addInfo" rows="7">{{form.addInfo}}</textarea></td>
-      <td class="vError">{{validationErrors.addInfo.msg}}</td>
-    </tr>
-  </tbody></table>
+  <formfield2 prop="area" label="Obszar tematyczny:">
+    <select id="area" name="area" data-ng-model="formData.area" data-ng-required="true" data-ng-options="s.name as s.name group by s.group for s in dictionaries.sAreas"></select>
+  </formfield2>
+  <formfield prop="name" label="Nazwa formy:" ng-model="formData.name"></formfield>
+  <formfield2 prop="scope" label="Zakres szkolenia:">
+    <textarea id="scope" name="fscope" rows="7" data-ng-model="formData.scope"></textarea>
+  </formfield2>
+  <formfield prop="target" label="Adresaci:" ng-model="formData.target"></formfield>
+  <formfield2 prop="type" label="Forma zajęć: ">
+    <select id="type" name="type" data-ng-model="formData.type" data-ng-required="true" data-ng-options="s for s in dictionaries.sTypes"></select>
+  </formfield2>
+  <formfield prop="hours" label="Liczba godzin:" ng-model="formData.hours"></formfield>
+  <formfield prop="startDate" label="Termin realizacji:" ng-model="formData.startDate"></formfield>
+  <formfield2 prop="owner" label="Kierownik szkolenia: ">
+    <select id="owner" name="owner" data-ng-model="formData.owner" data-ng-required="true" data-ng-options="s for s in dictionaries.sOwners"></select>
+  </formfield2>
+  <formfield prop="teacher" label="Prowadzący:" ng-model="formData.teacher"></formfield>
+  <formfield prop="payment" label="Odpłatność:" ng-model="formData.payment"></formfield>
+  <formfield2 prop="addInfo" label="Informacje dodatkowe: ">
+    <textarea id="addInfo" name="addInfo" rows="7" data-ng-model="formData.addInfo"></textarea>
+  </formfield2>
+  
   
   <br/>
   <button type="submit" class="btn btn-primary btn-large">Wyślij</button>
   
   <a href="/forms_list">Zobacz już wprowadzone formy</a>
 </form>
-
+</div>
 
