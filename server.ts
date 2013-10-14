@@ -54,6 +54,10 @@ export function startServer() {
   
   app.get ('/api/forms', api.forms.list);
   app.get ('/api/forms/:id', api.forms.get);
+  app.post('/api/forms', api.forms.post);
+  app.post('/api/forms/:id', api.forms.post);
+  //app.del('/api/cars/:id', cars.del)
+  
   app.get ('/api/dictionaries', api.dictionaries);
   
   app.get('/', function(req, res) {

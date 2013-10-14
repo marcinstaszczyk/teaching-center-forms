@@ -43,11 +43,12 @@ export function getDictionaries(done) {
 
 export var forms = {
   list: formList,
-  get: getForm
+  get: getForm,
+  saveOrUpdate: saveOrUpdateForm
 };
 
 function formList(done) {
-  db.CENForm.find(function(err, items) {
+  db.CENForm.find(["id"], function(err, items) {
     for(var i = 0; i < items.length; ++i) {
       var item = items[i];
       var startDate: Date = item.startDate;
@@ -62,6 +63,32 @@ function getForm(id, done) {
   db.CENForm.get(id, function(err, item) {
     done(err, item);
   });
+}
+
+function saveOrUpdateForm(form, done) {
+  console.log(JSON.stringify(form));
+  if (!form.id) {
+    db.CENForm.create([form], function(err) {
+      done(err);
+    });
+  } else {
+    db.CENForm.get(form.id, function(err, item) {
+      if (err) {
+        done(err);
+      } else {
+        for (var attr in form) {
+          if (form.hasOwnProperty(attr)) item[attr] = form[attr];
+        }
+        item.save(function (err) {
+          done(err);
+        });
+      }
+    });
+  }
+//  db.CENForm.get(id, function(err, item) {
+//    done(err, item);
+//  });
+  //done(null);
 }
 
 

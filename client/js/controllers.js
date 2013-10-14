@@ -9,6 +9,12 @@ function ListCtrl ($scope, $http, FormsService) {
     $scope.index = index;
     $scope.formId = $scope.forms[index].id;
   }
+  /*$scope.delete = function() {
+    if (index >= 0) {
+      CarsService.delete({id: $scope.cars[index].id})
+      $scope.cars.splice(index, 1)
+    }
+  }*/
   $scope.toggleArea = function () {
     $scope.showArea = !$scope.showArea;
   }
@@ -39,16 +45,16 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
   } else {
     $scope.formData = {};
   }
+  $scope.save = function() {
+    FormsService.save($scope.formData, function() {//TODO err
+      $location.path('/')
+    })
+  }
   
-//  console.log($scope.dictionaries);
   
   /*
   //$scope.car = CarsService.get({id: id})
-  $scope.action = "Update"
-
-  $scope.save = function() {
-    CarsService.update({id: id}, $scope.car, function() {
-      $location.path('/')
-    })
-  }*/
+  $scope.action = "Dodaj"
+  */
+  
 }

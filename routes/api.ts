@@ -17,6 +17,13 @@ export var forms = {
     dao.forms.get(id, function (err, item) {
       res.json(formatRespData(err, item));
     });
+  },
+  post: function (req, res) {
+    console.log(~~req.params.id);
+    var form = req.body;
+    dao.forms.saveOrUpdate(form, function (err) {
+      res.json(formatRespData(err, null));
+    });
   }
 }
 
