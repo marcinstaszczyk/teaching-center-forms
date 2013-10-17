@@ -11838,10 +11838,11 @@ function textInputType(scope, element, attr, ctrl, $sniffer, $browser) {
     ctrl.$formatters.push(minLengthValidator);
   }
 
-  // max length validator
+//   max length validator
   if (attr.ngMaxlength) {
-    var maxlength = int(attr.ngMaxlength);
+//    var maxlength = int(attr.ngMaxlength); --Mas CHANGE
     var maxLengthValidator = function(value) {
+      var maxlength = int(scope.$eval(attr.ngMaxlength)); //--Mas CHANGE
       if (!isEmpty(value) && value.length > maxlength) {
         ctrl.$setValidity('maxlength', false);
         return undefined;
@@ -11854,6 +11855,7 @@ function textInputType(scope, element, attr, ctrl, $sniffer, $browser) {
     ctrl.$parsers.push(maxLengthValidator);
     ctrl.$formatters.push(maxLengthValidator);
   }
+  
 }
 
 function numberInputType(scope, element, attr, ctrl, $sniffer, $browser) {

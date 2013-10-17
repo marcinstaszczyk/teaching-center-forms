@@ -9,14 +9,14 @@
     <a class="btn btn-large btn-danger" data-ng-click="delete()" data-ng-class="{disabled: index < 0}">Delete</a>
   </div>
   <div class="btn-group">
-    <a class="btn btn-large" data-ng-click="toggleArea()">{{showArea && 'Ukryj' || "Pokaż"}} obszar</a>
+    <a class="btn btn-large" data-ng-click="toggleArea()">{{showArea &amp;&amp; 'Ukryj' || "Pokaż"}} obszar</a>
   </div>
 </div>
 
 <div class="formsContainer">
   
   <div data-ng-repeat="f in forms" data-ng-click="select($index)" data-ng-class="{'info': $index == index}">
-    <formtable formdata="f" showarea="showArea"></formtable>
+    <div class="formtable" data-formdata="f" data-showarea="showArea"></div>
   </div>
 </div>
 

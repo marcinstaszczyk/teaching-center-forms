@@ -1,7 +1,9 @@
 <div class="control-group">
   <label class="control-label" for="{{prop}}">{{label}}</label>
   <div class="controls">
-  <input type="text" id="{{prop}}" name="{{prop}}" data-ng-model="data"/>
-  <!-- <td class="vError">{{validationErrors.name.msg}}</td> -->
+  <input type="text" id="{{prop}}" name="{{prop}}" data-ng-model="data" data-ng-trim="true" required data-ng-maxlength="max"/><!-- data-min-length-expr="max" -->
+  <span class="vErr" data-ng-show="!eForm[prop].$pristine &amp;&amp; eForm[prop].$error.required">Wypłenienie pola jest wymagane</span>
+  <span class="vErr" data-ng-show="eForm[prop].$error.maxlength">Pole może mieć maksymalnie 250 znaków</span>
+  a{{eForm['scope']}}a {{prop}} {{max}}
   </div>
 </div>

@@ -14,45 +14,43 @@ input#payment, input#startDate {
 /*select#type, select#owner {
   width: 300px;
 }*/
-td.vError {
-  color: red;
-  padding-left: 20px;
-  padding-top: 7px;
-}
 </style>
 
 <div style="float: right;">
   <h3>Podgląd</h3>
-  <formtable formdata="formData" showarea="true"></formtable>
+  <div class="formtable" data-formdata="formData" data-showarea="true"></div>
 </div>
 
 <div>
-<form name="form" class="form-horizontal">
-  <formfield2 prop="area" label="Obszar tematyczny:">
+<form name="frm" class="form-horizontal" novalidate>
+  <div class="formfield2" data-prop="area" data-label="Obszar tematyczny:">
     <select id="area" name="area" data-ng-model="formData.area" data-ng-required="true" data-ng-options="s.name as s.name group by s.group for s in dictionaries.sAreas"></select>
-  </formfield2>
-  <formfield prop="name" label="Nazwa formy:" ng-model="formData.name"></formfield>
-  <formfield2 prop="scope" label="Zakres szkolenia:">
-    <textarea id="scope" name="fscope" rows="7" data-ng-model="formData.scope"></textarea>
-  </formfield2>
-  <formfield prop="target" label="Adresaci:" ng-model="formData.target"></formfield>
-  <formfield2 prop="type" label="Forma zajęć: ">
+  </div>
+  {{frm}}
+  <div class="formfield" data-prop="name" data-label="Nazwa formy:" data-ng-model="formData.name" data-max="10"></div>
+  <div class="formfield2" data-prop="scope" data-label="Zakres szkolenia:">
+    <textarea id="scope" name="scope" rows="7" data-ng-model="formData.scope" required data-ng-maxlength="250"></textarea>
+    <span class="vErr" data-ng-show="!frm.scope.$pristine &amp;&amp; frm.scope.$error.required">Wypłenienie pola jest wymagane</span>
+    <span class="vErr" data-ng-show="frm.scope.$error.maxlength">Pole może mieć maksymalnie 250 znaków</span>
+  </div>
+  <div class="formfield" data-prop="target" data-label="Adresaci:" data-ng-model="formData.target"></div>
+  <div class="formfield2" data-prop="type" data-label="Forma zajęć: ">
     <select id="type" name="type" data-ng-model="formData.type" data-ng-required="true" data-ng-options="s for s in dictionaries.sTypes"></select>
-  </formfield2>
-  <formfield prop="hours" label="Liczba godzin:" ng-model="formData.hours"></formfield>
-  <formfield prop="startDate" label="Termin realizacji:" ng-model="formData.startDate"></formfield>
-  <formfield2 prop="owner" label="Kierownik szkolenia: ">
+  </div>
+  <div class="formfield" data-prop="hours" data-label="Liczba godzin:" data-ng-model="formData.hours"></div>
+  <div class="formfield" data-prop="startDate" data-label="Termin realizacji:" data-ng-model="formData.startDate"></div>
+  <div class="formfield2" data-prop="owner" data-label="Kierownik szkolenia: ">
     <select id="owner" name="owner" data-ng-model="formData.owner" data-ng-required="true" data-ng-options="s for s in dictionaries.sOwners"></select>
-  </formfield2>
-  <formfield prop="teacher" label="Prowadzący:" ng-model="formData.teacher"></formfield>
-  <formfield prop="payment" label="Odpłatność:" ng-model="formData.payment"></formfield>
-  <formfield2 prop="addInfo" label="Informacje dodatkowe: ">
+  </div>
+  <div class="formfield" data-prop="teacher" data-label="Prowadzący:" data-ng-model="formData.teacher"></div>
+  <div class="formfield" data-prop="payment" data-label="Odpłatność:" data-ng-model="formData.payment"></div>
+  <div class="formfield2" data-prop="addInfo" data-label="Informacje dodatkowe: ">
     <textarea id="addInfo" name="addInfo" rows="7" data-ng-model="formData.addInfo"></textarea>
-  </formfield2>
+  </div>
   
   
   <br/>
-  <a class="btn btn-primary btn-large" data-ng-click="save()">{{formData.id && 'Aktualizuj' || "Dodaj"}}</a>
+  <a class="btn btn-primary btn-large" data-ng-click="save()">{{formData.id &amp;&amp; 'Aktualizuj' || "Dodaj"}}</a>
   
   <br/><br/><a href="/forms_list">Zobacz już wprowadzone formy</a>
 </form>
