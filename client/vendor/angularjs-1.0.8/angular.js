@@ -12470,8 +12470,19 @@ var ngModelDirective = function() {
 
       var modelCtrl = ctrls[0],
           formCtrl = ctrls[1] || nullFormCtrl;
-
-      formCtrl.$addControl(modelCtrl);
+      //Mas CHANGE begin
+      var n = modelCtrl.$name;
+      if (n && n.indexOf("{{") == 0 && n.lastIndexOf("}}") == n.length - 2) {
+        var c = n.substr(2, n.length - 4);
+        scope.$watch(c, function(newValue, oldValue) {
+          modelCtrl.$name = newValue;
+          
+          formCtrl.$addControl(modelCtrl);
+        });
+      } else {
+        formCtrl.$addControl(modelCtrl);
+      }
+      //Mas CHANGE end
 
       element.bind('$destroy', function() {
         formCtrl.$removeControl(modelCtrl);

@@ -1,6 +1,8 @@
 <div class="control-group">
   <label class="control-label" for="{{prop}}">{{label}}</label>
-  <div class="controls" data-ng-transclude>
-  <!-- <td class="vErr">{{validationErrors.name.msg}}</td> -->
+  <div class="controls">
+    <span data-ng-transclude></span>
+    <span class="vErr" data-ng-show="!eForm[prop].$pristine &amp;&amp; eForm[prop].$error.required">Wypłenienie pola jest wymagane</span>
+    <span class="vErr" data-ng-show="eForm[prop].$error.maxlength">Pole może mieć maksymalnie {{max}} znaków</span>
   </div>
 </div>
