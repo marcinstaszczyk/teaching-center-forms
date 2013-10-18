@@ -35,7 +35,7 @@ input#payment, input#startDate {
     <select id="type" name="type" data-ng-model="formData.type" data-ng-required="true" data-ng-options="s for s in dictionaries.sTypes"></select>
   </div>
   <div class="formfield" data-prop="hours" data-label="Liczba godzin:" data-ng-model="formData.hours" data-max="5"></div>
-  <div class="formfield" data-prop="startDate" data-label="Termin realizacji:" data-ng-model="formData.startDate" data-max="10"></div>
+  <div class="formfield" data-prop="startDate" data-label="Termin realizacji:" data-ng-model="formData.startDate" data-max="30"></div><!-- TODO max -->
   <div class="formfield2" data-prop="owner" data-label="Kierownik szkolenia: ">
     <select id="owner" name="owner" data-ng-model="formData.owner" data-ng-required="true" data-ng-options="s for s in dictionaries.sOwners"></select>
   </div>
@@ -47,7 +47,14 @@ input#payment, input#startDate {
   
   
   <br/>
-  <a class="btn btn-primary btn-large" data-ng-click="save()">{{formData.id &amp;&amp; 'Aktualizuj' || "Dodaj"}}</a>
+  <table>
+    <tr><td><a class="btn btn-primary btn-large" data-ng-click="frm.$valid &amp;&amp; save()" data-ng-class="{disabled: !frm.$valid}">{{formData.id &amp;&amp; 'Aktualizuj' || "Dodaj"}}</a></td>
+    <td>
+      <span class="vErr" data-ng-show="frm.$pristine">Brak zmian<br/></span>
+      <span class="vErr" data-ng-show="frm.$error.required">Prosze wypełnić wymagane pola<br/></span>
+      <span class="vErr" data-ng-show="!frm.$error.required &amp;&amp; !frm.$valid">Prosze poprawić wszystkie błedy<br/></span>
+    </td></tr>
+  </table>
   
   <br/><br/><a href="/forms_list">Zobacz już wprowadzone formy</a>
 </form>
