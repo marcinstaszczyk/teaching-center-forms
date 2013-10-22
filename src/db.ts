@@ -6,6 +6,7 @@ var orm = require("orm");
 export var sAreas = null;
 export var sTypes = null;
 export var sOwners = null;
+export var sIndex = null;
 export var CENForm = null;
 
 // Callback will be called when done.
@@ -34,6 +35,10 @@ export function init(done) {
       name      : { type: "text", size: 255 },
     });
     
+    sIndex = db.define("s_index", {
+      name      : { type: "text", size: 255 },
+    });
+    
     CENForm = db.define("cen_form", {
       area      : { type: "text", size: 255 },
       name      : { type: "text", size: 255 },
@@ -52,12 +57,14 @@ export function init(done) {
     sAreas.sync(function(err) {});
     sTypes.sync(function(err) {});
     sOwners.sync(function(err) {});
+    sIndex.sync(function(err) {});
     CENForm.sync(function(err) {});
     
     // Export our object for basic interactions.
     module.exports.sAreas = sAreas;
     module.exports.sTypes = sTypes;
     module.exports.sOwners = sOwners;
+    module.exports.sIndex = sIndex;
     module.exports.CENForm = CENForm;
     
     // We're done.

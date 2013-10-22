@@ -19,7 +19,6 @@ export var forms = {
     });
   },
   post: function (req, res) {
-    console.log(~~req.params.id);
     var form = req.body;
     dao.forms.saveOrUpdate(form, function (err) {
       res.json(formatRespData(err, null));

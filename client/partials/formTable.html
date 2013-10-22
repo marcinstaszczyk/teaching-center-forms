@@ -11,8 +11,8 @@
   <tr>
     <td>{{formdata.type}}</td>
     <td>Liczba godzin dyd.: {{formdata.hours}}</td>
-    <td>Termin: {{formdata.startDate}} r.</td>
-    <td>{{formdata.payment}} PLN</td><!-- formatowanie liczby -->
+    <td>Termin: {{formdata.startDate | date:'shortDate' }} r.</td>
+    <td>{{formdata.payment | currency:"PLN"}}</td><!-- formatowanie liczby -->
   </tr>
   <tr>
     <td>Zakres szkolenia</td>

@@ -7,7 +7,7 @@ export function getDictionaries(done) {
   if (dictionaries) {
     done(dictionaries);
   } else {
-    var dicts = {sAreas: [], sAreasSimple: [], sTypes: [], sOwners: []};
+    var dicts = {sAreas: [], sAreasSimple: [], sTypes: [], sOwners: [], sIndex: []};
     
     db.sAreas.find(function(err, items) {
       var lastGroup: Array = null;
@@ -26,15 +26,20 @@ export function getDictionaries(done) {
           dicts.sTypes[i] = items[i].name;
         }
 
-
         db.sOwners.find(["name"], function(err, items) {
           for (var i = 0; i < items.length; ++i) {
             dicts.sOwners[i] = items[i].name;
           }
           
-          dictionaries = dicts;
-          
-          done(dictionaries);
+          db.sIndex.find(function(err, items) {
+            for (var i = 0; i < items.length; ++i) {
+              dicts.sIndex[i] = items[i].name;
+            }
+            
+            dictionaries = dicts;
+            
+            done(dictionaries);
+          });
         });
       });
     });
@@ -61,6 +66,7 @@ function formList(done) {
 
 function getForm(id, done) {
   db.CENForm.get(id, function(err, item) {
+    console.log(item.startDate)
     done(err, item);
   });
 }

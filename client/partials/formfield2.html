@@ -2,7 +2,8 @@
   <label class="control-label" for="{{prop}}">{{label}}</label>
   <div class="controls">
     <span data-ng-transclude></span>
-    <span class="vErr" data-ng-show="!eForm[prop].$pristine &amp;&amp; eForm[prop].$error.required">Wypłenienie pola jest wymagane</span>
-    <span class="vErr" data-ng-show="eForm[prop].$error.maxlength">Pole może mieć maksymalnie {{max}} znaków</span>
+    <span data-ng-class="{vErr: eForm[prop].$error.maxlength}" data-ng-show="maxInfo">max {{max}} znaków</span>
+    <span class="vErr" data-ng-show="eForm[prop].$dirty &amp;&amp; eForm[prop].$error.required">Wypłenienie pola jest wymagane</span>
+    <span class="vErr" data-ng-show="!maxInfo &amp;&amp; eForm[prop].$error.maxlength">Pole może mieć maksymalnie {{max}} znaków</span>
   </div>
 </div>

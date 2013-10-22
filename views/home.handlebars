@@ -141,6 +141,13 @@ td label {
       <td><textarea id="addInfo" name="addInfo" rows="7">{{form.addInfo}}</textarea></td>
       <td class="vErr">{{validationErrors.addInfo.msg}}</td>
     </tr>
+    <tr>
+      <td><label for="index">Indeks: </label></td>
+      <td>
+        {{{radio_checked 'index' sIndex form.index}}}
+      </td>
+      <td class="vErr">{{validationErrors.index.msg}}</td>
+    </tr>
   </tbody></table>
   
   <br/>

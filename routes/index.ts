@@ -6,6 +6,7 @@ export function go(req, res) {
     res.locals.sAreas = dicts.sAreas;
     res.locals.sTypes = dicts.sTypes;
     res.locals.sOwners = dicts.sOwners;
+    res.locals.sIndex = dicts.sIndex;
   
     res.render('home');
   });

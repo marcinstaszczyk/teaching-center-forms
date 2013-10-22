@@ -1,4 +1,4 @@
-var CENForms = angular.module('CENForms', ['ngResource'])
+var CENForms = angular.module('CENForms', ['ngResource', 'ui.date'])
 
 CENForms.config(function($routeProvider, $locationProvider) {
   $routeProvider
@@ -26,6 +26,7 @@ CENForms.directive('formfield', function() {
       prop:  '@',
       label: '@',
       max: '=',
+      maxInfo: '@',
       data: '=ngModel'
     },
     templateUrl: '/partials/formfield.html',
@@ -46,6 +47,7 @@ CENForms.directive('formfield2', function() {
       prop:  '@',
       label: '@',
       max: '=',
+      maxInfo: '@',
     },
     transclude: true,
     templateUrl: '/partials/formfield2.html',

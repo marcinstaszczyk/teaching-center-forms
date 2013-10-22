@@ -4,9 +4,9 @@
 
 import db = require("../src/db");
 import dao = require("../src/dao");
-import expressValidator = require('express-validator');
 var index = require("./index");
 var util = require('util');
+var expressValidator = require('express-validator');
 
 
 export function go(req: ExpressValidator.RequestValidation, res) {
@@ -73,6 +73,26 @@ dao.getDictionaries(function (dicts) {
   try {
     req.assert('addInfo', 'Pole może mieć maksymalnie 250 znaków').len(0, 250);
   } catch (e) {}
+  try {
+    var indexValue = body.index;
+    console.log(indexValue);
+    if (indexValue) {
+      if (!Array.isArray(indexValue)) {
+        indexValue = [indexValue];
+      }
+      var validator = new expressValidator.Validator();
+      for (var i = 0; i < indexValue.length; i++) {
+        try {
+          validator.check(indexValue[i]).notNull().isIn(dicts.sIndex);
+        } catch (e) {
+          addError(req, 'index', indexValue[i], 'Wartość jest niepoprawna');
+        }
+      }
+      if (indexValue.length > 4) {
+        addError(req, 'index', indexValue.length, 'Możesz wybrać maksymalnie 4 opcje');
+      }
+    }
+  } catch (e) {console.log(e)}
   
   var errors = req.validationErrors(true);
   if (errors) {
@@ -104,3 +124,21 @@ dao.getDictionaries(function (dicts) {
   }
 });
 };
+
+function addError(req, param, value, msg) {
+  var error = {
+    param : param,
+    msg   : msg,
+    value : value
+  };
+
+  if (req._validationErrors === undefined) {
+    req._validationErrors = [];
+  }
+  req._validationErrors.push(error);
+
+  if (req.onErrorCallback) {
+    req.onErrorCallback(msg);
+  }
+  return this;
+}

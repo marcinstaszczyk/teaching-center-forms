@@ -28,8 +28,8 @@ export function startServer() {
   app.set('views', __dirname + '/views');
   //app.set('view engine', 'jade');
   
-  var aaaa = exphbs({defaultLayout: 'template', helpers: {options_selected : options_selected}});
-  app.engine('handlebars', aaaa);
+  var exphbs = exphbs({defaultLayout: 'template', helpers: {options_selected : options_selected, radio_checked: radio_checked}});
+  app.engine('handlebars', exphbs);
   
   var clientDir = path.join(__dirname, 'client');
   
@@ -81,17 +81,48 @@ export function startServer() {
 
 }
 
-function options_selected(context, test) {
+function options_selected(options, selected) {
   var ret = '';
-  for (var i = 0; i < context.length; i++) {
-    var option = '<option value="' + context[i] + '"';
-    if (test && test.toLowerCase() == context[i].toLowerCase()) {
+  for (var i = 0; i < options.length; i++) {
+    var option = '<option value="' + options[i] + '"';
+    if (isSelected(options[i], selected)) {
       option += ' selected="selected"';
     }
-    option += '>' + context[i] + '</option>';
-    //TODO FIXME obecnie jest bazpieczne bo wyświetlamy dane z bazy, ale ogólnie w tym miejscu powinniśmy wykonać escape-owanie: Handlebars.Utils.escapeExpression(context[i])
+    option += '>' + options[i] + '</option>';
+    //TODO FIXME obecnie jest bazpieczne bo wyświetlamy dane z bazy, ale ogólnie w tym miejscu powinniśmy wykonać escape-owanie: Handlebars.Utils.escapeExpression(options[i])
     ret += option;
   }
   //return new Handlebars.SafeString(ret);
   return ret;
+}
+
+function radio_checked(name, options, checked) {
+//address = Array.isArray(address) ? address[0] : address;
+  var ret = '';
+  for (var i = 0; i < options.length; i++) {
+    var option = '<label class="checkbox"><input type="checkbox" value="' + options[i] + '" name="' + name + '"';
+    if (isSelected(options[i], checked)) {
+      option += ' checked="checked"';
+    }
+    option += '/>' + options[i] + '</label>';
+    //TODO FIXME obecnie jest bazpieczne bo wyświetlamy dane z bazy, ale ogólnie w tym miejscu powinniśmy wykonać escape-owanie: Handlebars.Utils.escapeExpression(options[i])
+    ret += option;
+  }
+  //return new Handlebars.SafeString(ret);
+  return ret;
+}
+
+function isSelected(option, selected) {
+  if (selected) {
+    if (Array.isArray(selected)) {
+      for (var j = 0; j < selected.length; j++) {
+        if (selected[j] && selected[j].toLowerCase() == option.toLowerCase()) {
+          return true;
+        }
+      }
+    } else {
+      return selected.toLowerCase() == option.toLowerCase();
+    }
+  }
+  return false;
 }
