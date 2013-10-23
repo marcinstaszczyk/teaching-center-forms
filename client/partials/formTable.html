@@ -1,5 +1,5 @@
 
-<div data-ng-show="showarea">
+<div data-ng-show="showdatails">
   Obszar: {{formdata.area}}
 </div>
 <!-- border="1" cellspacing="0" cellpadding="0"  -->
@@ -36,4 +36,12 @@
   </tr>
 </tbody></table>
 
-
+<div data-ng-show="showdatails" class="formIndex" style="">
+  <span>Indeks:</span> 
+  <div class="content">
+    <div data-ng-hide="formdata.index">pusty</div>
+    <div data-ng-repeat="i in formdata.index">
+      {{i}}
+    </div>
+  </div>
+</div>

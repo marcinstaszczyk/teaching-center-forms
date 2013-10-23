@@ -64,7 +64,7 @@ CENForms.directive('formtable', function() {
   return {
     restrict: 'C',
     scope: {
-      showarea: '=showarea',
+      showdatails: '=showdatails',
       formdata: '=formdata'
     },
     templateUrl: '/partials/formTable.html'

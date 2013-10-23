@@ -51,6 +51,7 @@ export function init(done) {
       teacher   : { type: "text", size: 255 },
       payment   : { type: "number" },
       addInfo   : { type: "text", size: 2048 },
+      indexMerged:{ type: "text", size: 2048 },
     });
 
     // Make the database.

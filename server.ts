@@ -56,7 +56,7 @@ export function startServer() {
   app.get ('/api/forms/:id', api.forms.get);
   app.post('/api/forms', api.forms.post);
   app.post('/api/forms/:id', api.forms.post);
-  //app.del('/api/cars/:id', cars.del)
+  app.del ('/api/forms/:id', api.forms.del)
   
   app.get ('/api/dictionaries', api.dictionaries);
   
@@ -65,7 +65,7 @@ export function startServer() {
   })
     
   // Initialize the database before starting the server.
-  db.init(function(err) {
+  db.init(function(err) {//TODO move do DAO
     if (err) {
       console.log(err);
     } else {

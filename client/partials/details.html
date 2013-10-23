@@ -29,31 +29,39 @@ input#payment, input#startDate {
   <div class="formfield2" data-prop="type" data-label="Forma zajęć: ">
     <select id="type" name="type" data-ng-model="formData.type" data-ng-required="true" data-ng-options="s for s in dictionaries.sTypes"></select>
   </div>
-  <div class="formfield2" data-prop="hours" data-label="Liczba godzin:" data-ng-model="formData.hours" data-max="5">
+  <div class="formfield2" data-prop="hours" data-label="Liczba godzin:" data-max="5">
     <input type="number" id="hours" name="hours" data-ng-model="formData.hours" data-ng-trim="true" required data-ng-maxlength="5" data-ng-pattern="/^\d+$/" min="1" max="168"/>
     <span class="vErr" data-ng-show="frm.hours.$error.number || frm.hours.$error.pattern">Podana wartość nie jest liczbą natualną</span>
     <span class="vErr" data-ng-show="frm.hours.$error.min">Min 1 godzina</span>
     <span class="vErr" data-ng-show="frm.hours.$error.max">Max 168 godzin</span>
   </div>
-  <div class="formfield2" data-prop="startDate" data-label="Termin realizacji:" data-ng-model="formData.startDate" data-max="10">
+  <div class="formfield2" data-prop="startDate" data-label="Termin realizacji:" data-max="10">
     <input type="text" id="startDate" name="startDate" data-ng-model="formData.startDate" required data-ng-maxlength="30"
         data-ui-date="dateOptions" /><!--   data-ng-pattern="/^\d{4}-(0?[1-9]|1[012])-(0?[1-9]|[12][0-9]|3[01])$/"  --> <!-- data-ui-date-format="yy-mm-dd"     data-ui-date-format="dateOptions.dateFormat" -->
-    <span class="vErr" data-ng-show="frm.startDate.$error.pattern">Niepoprawny format daty (rrrr-mm-dd). Przykład: 2013-09-23.</span>
+    <span class="vErr" data-ng-show="frm.startDate.$error.pattern">Niepoprawny format daty. Oczekiwano "dd.mm.rrrr". Przykład: 23.09.2013</span>
   </div>
   <div class="formfield2" data-prop="owner" data-label="Kierownik szkolenia: ">
     <select id="owner" name="owner" data-ng-model="formData.owner" data-ng-required="true" data-ng-options="s for s in dictionaries.sOwners"></select>
   </div>
   <div class="formfield" data-prop="teacher" data-label="Prowadzący:" data-ng-model="formData.teacher" data-max="70" data-max-info="true"></div>
-  <div class="formfield2" data-prop="payment" data-label="Odpłatność:" data-ng-model="formData.payment" data-max="10">
+  <div class="formfield2" data-prop="payment" data-label="Odpłatność:" data-max="10">
     <input type="number" id="payment" name="payment" data-ng-model="formData.payment" data-ng-trim="true" required data-ng-maxlength="10" data-ng-pattern="/^\d*$/" min="0" max="100000"/>
     <span class="vErr" data-ng-show="frm.payment.$error.number || frm.payment.$error.pattern">Podana wartość nie jest liczbą natualną</span>
     <span class="vErr" data-ng-show="frm.payment.$error.max">Max 100000</span>
   </div>
-  <div class="formfield2" data-prop="addInfo" data-label="Informacje dodatkowe: " data-max="250">
+  <div class="formfield2" data-prop="addInfo" data-label="Informacje dodatkowe:" data-max="250">
     <textarea id="addInfo" name="addInfo" rows="7" data-ng-model="formData.addInfo" data-ng-maxlength="250"></textarea>
   </div>
-  
-  
+  <div class="formfield2" data-prop="payment" data-label="Indeks:">
+    <div class="btn-group">
+      <a class="btn" data-ng-click="toggleIndex()">{{showIndex &amp;&amp; 'Ukryj' || "Pokaż"}}</a>
+    </div>
+    <span class="vErr" data-ng-show="frm.index.$error.max">Możesz zaznaczyć tylko 4 pola indeksu</span>
+    <div data-ng-show="showIndex" style="padding-top: 10px;">
+      <label class="checkbox" data-ng-repeat="indexValue in dictionaries.sIndex"><input type="checkbox" name="index" 
+              data-ng-model="formData.indexMap[indexValue]" data-ng-change="indexChange(indexValue, formData.indexMap[indexValue])"/>{{indexValue}}</label>
+    </div>
+  </div>
   <br/>
   <table>
     <tr><td><a class="btn btn-primary btn-large" data-ng-click="save()" data-ng-class="{disabled: !frm.$valid}">{{formData.id &amp;&amp; 'Aktualizuj' || "Dodaj"}}</a></td>
@@ -70,5 +78,5 @@ input#payment, input#startDate {
 
 <div style="float: right;">
   <h3>Podgląd</h3>
-  <div class="formtable" data-formdata="formData" data-showarea="true"></div>
+  <div class="formtable" data-formdata="formData" data-showdatails="true"></div>
 </div>

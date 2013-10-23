@@ -2,25 +2,29 @@ function ListCtrl ($scope, $http, FormsService) {
   $scope.forms = FormsService.query();
   
   $scope.index = -1;
-  $scope.formId = -1;
-  $scope.showArea = false;
+  $scope.formId = null;
+  $scope.showdatails = false;
  
   $scope.select = function (index) {
     $scope.index = index;
     $scope.formId = $scope.forms[index].id;
   }
-  /*$scope.delete = function() {
-    if (index >= 0) {
-      CarsService.delete({id: $scope.cars[index].id})
-      $scope.cars.splice(index, 1)
+  $scope.delete = function() {
+    if ($scope.index > 0 && $scope.formId) {
+      FormsService.delete({id: $scope.formId})
+      $scope.forms.splice($scope.index, 1)
     }
-  }*/
+  }
   $scope.toggleArea = function () {
-    $scope.showArea = !$scope.showArea;
+    $scope.showdatails = !$scope.showdatails;
   }
 }
 
 function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesService) {
+  $scope.showIndex = false;
+  $scope.toggleIndex = function () {
+    $scope.showIndex = !$scope.showIndex;
+  }
   
   var dict = DictionariesService.get(function() {
     var areas = [];
@@ -50,10 +54,26 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
       if (resp && resp.content && resp.content.startDate) {//konwertujemy po wstawieniu do $scope bo wstawienie wcześniej przerabia Date() na postać "2013-11-21T00:00:00.000Z"
         $scope.formData.startDate = new Date(resp.content.startDate);
       }
+      prepareForm($scope.formData);
     })
   } else {
     $scope.formData = {};
+    prepareForm($scope.formData);
   }
+  
+  $scope.indexChange = function(indexValue, checked) {
+    $scope.formData.indexMap[indexValue] = checked;
+    if (checked) {
+      $scope.formData.index.push(indexValue);
+    } else {
+      var i = jQuery.inArray(indexValue, $scope.formData.index);
+      $scope.formData.index.splice(i, 1);
+    }
+//    $scope.frm.index.$error.max = ($scope.formData.index.length > 4);
+    $scope.frm.index.$setValidity('max', $scope.formData.index.length <= 4);
+    console.log($scope.frm.index.$error);
+  }
+  
   $scope.save = function() {
     if ($scope.frm.$valid) {
       FormsService.save($scope.formData, function() {//TODO err
@@ -68,10 +88,14 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
     }
   }
   
-  
-  /*
-  //$scope.car = CarsService.get({id: id})
-  $scope.action = "Dodaj"
-  */
-  
+}
+
+function prepareForm(formData) {
+  //przygotowujemy strukrure dany do checkbox-ów z indeksami
+  formData.indexMap = {};
+  if (formData.index) {
+    for(var i = 0; i < formData.index.length; ++i) {
+      formData.indexMap[formData.index[i]] = true;
+    }
+  }
 }

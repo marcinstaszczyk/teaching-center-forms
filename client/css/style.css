@@ -31,6 +31,19 @@ table.forms tr td:FIRST-CHILD {
   white-space:nowrap;
 }
 
+table + div.formIndex {
+  margin-top: -20px; margin-bottom: 40px;
+}
+div.formIndex span {
+  float: left;
+}
+div.formIndex div.content {
+  margin-left: 60px;
+}
+div.formIndex:after {
+	clear: both;
+}
+
 .vErr {
 	color: red;
 }

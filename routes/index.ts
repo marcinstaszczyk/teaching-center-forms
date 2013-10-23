@@ -1,4 +1,3 @@
-var db = require("../src/db");
 var dao = require("../src/dao");
 
 export function go(req, res) {

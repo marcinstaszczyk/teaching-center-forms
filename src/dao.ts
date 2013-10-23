@@ -1,6 +1,6 @@
 ///<reference path='../node.d.ts' />
 
-var db = require("../src/db");
+import db = require("../src/db");
 
 var dictionaries;
 export function getDictionaries(done) {
@@ -49,52 +49,90 @@ export function getDictionaries(done) {
 export var forms = {
   list: formList,
   get: getForm,
-  saveOrUpdate: saveOrUpdateForm
+  saveOrUpdate: saveOrUpdateForm,
+  save: save,
+  remove: removeForm
 };
 
 function formList(done) {
   db.CENForm.find(["id"], function(err, items) {
     for(var i = 0; i < items.length; ++i) {
-      var item = items[i];
-      var startDate: Date = item.startDate;
-      item.startDate = startDate.getFullYear() + "-" + (startDate.getMonth()+1) + "-" + startDate.getDate();
+      prepareLoadedData(items[i]);
     }
-    
     done(err, items);
   });
 }
 
 function getForm(id, done) {
   db.CENForm.get(id, function(err, item) {
-    console.log(item.startDate)
+    prepareLoadedData(item);
     done(err, item);
   });
+}
+
+function prepareLoadedData(item) {
+  if (item.indexMerged) {
+    item.index = item.indexMerged.split(":;:");
+  }
 }
 
 function saveOrUpdateForm(form, done) {
   console.log(JSON.stringify(form));
   if (!form.id) {
-    db.CENForm.create([form], function(err) {
-      done(err);
-    });
+    save(form, done);
   } else {
     db.CENForm.get(form.id, function(err, item) {
       if (err) {
         done(err);
       } else {
-        for (var attr in form) {
-          if (form.hasOwnProperty(attr)) item[attr] = form[attr];
-        }
-        item.save(function (err) {
-          done(err);
+        copyAndPrepareDataToSave(form, item);
+        item.save(function (err, item) {
+          done(err, item);
         });
       }
     });
   }
-//  db.CENForm.get(id, function(err, item) {
-//    done(err, item);
-//  });
-  //done(null);
 }
 
+function save(form, done) {
+  var item = copyAndPrepareDataToSave(form, {});
+  db.CENForm.create(item, function(err, item) {
+    done(err, item);
+  });
+}
 
+function copyAndPrepareDataToSave(form, to) {
+  for (var attr in form) {
+    if (form.hasOwnProperty(attr)) to[attr] = form[attr];
+  }
+  if (form.startDateConverted) {
+    to.startDate = form.startDateConverted;
+  }
+  if (form.index) {
+    if (Array.isArray(form.index)) {
+      var merge = "";
+      for(var i = 0; i < form.index.length; ++i) {
+        if (i != 0) {
+          merge += ":;:";
+        }
+        merge += form.index[i];
+      }
+      to.indexMerged = merge;
+    } else {
+      to.indexMerged = form.index;
+    }
+  } 
+  return to;
+}
+
+function removeForm(id, done) {
+  db.CENForm.get(id, function(err, item) {
+    if (err) {
+      done(err);
+    } else {
+      item.remove(function (err) {
+        done(err);
+      });
+    }
+  });
+}
