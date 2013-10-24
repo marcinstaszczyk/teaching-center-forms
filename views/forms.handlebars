@@ -17,12 +17,12 @@
 {{#each CENForms}}
   <!-- border="1" cellspacing="0" cellpadding="0"  -->
   <table class="forms table table-stripped table-hover table-bordered table-condensed"><tbody>
-    <tr>
+    <tr class="aCenter">
       <td>FD-{{id}}</td>
-      <td colspan="3">{{name}}</td>
+      <td colspan="3" class="bold italic">{{name}}</td>
     </tr>
-    <tr>
-      <td>{{type}}</td>
+    <tr class="aCenter italic">
+      <td class="bold">{{type}}</td>
       <td>Liczba godzin dyd.: {{hours}}</td>
       <td>Termin: {{startDate}} r.</td>
       <td>{{payment}} PLN</td><!-- formatowanie liczby -->

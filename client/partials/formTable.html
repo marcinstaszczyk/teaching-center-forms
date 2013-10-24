@@ -16,7 +16,7 @@
   </tr>
   <tr>
     <td>Zakres szkolenia</td>
-    <td colspan="3" class="pre">{{formdata.scope}}</td>
+    <td colspan="3" data-ng-bind-html-unsafe="formdata.scope | addBRs"></td>
   </tr>
   <tr>
     <td>Adresaci</td>
@@ -28,7 +28,7 @@
   </tr>
   <tr>
     <td>Uwagi</td>
-    <td colspan="3" class="pre">{{formdata.addInfo}}</td>
+    <td colspan="3" data-ng-bind-html-unsafe="formdata.addInfo | addBRs"></td>
   </tr>
 </tbody></table>
 

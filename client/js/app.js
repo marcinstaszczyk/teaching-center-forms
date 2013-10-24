@@ -1,4 +1,4 @@
-var CENForms = angular.module('CENForms', ['ngResource', 'ui.date'])
+var CENForms = angular.module('CENForms', ['ngResource', 'ngSanitize', 'ui.date'])
 
 CENForms.config(function($routeProvider, $locationProvider) {
   $routeProvider
@@ -75,3 +75,13 @@ CENForms.directive('formtable', function() {
     templateUrl: '/partials/formTable.html'
   }
 })
+
+var escapeEl = document.createElement('textarea');
+CENForms.filter('addBRs', ['$sanitize', function($sanitize) {
+  return function(input) {
+    escapeEl.textContent = input;
+    input = escapeEl.innerHTML;
+    input = input.replace(/\n/g,'<br/>')
+    return input;
+  };
+}]);
