@@ -16,6 +16,9 @@ input#payment, input#startDate {
 }*/
 </style>
 
+<div class="alert alert-error" data-ng-show="error">{{error}}</div>
+<div class="alert alert-success" data-ng-show="success">{{success}}</div>
+
 <div style="float: left">
 <form name="frm" class="form-horizontal" novalidate>
   <div class="formfield2" data-prop="area" data-label="Obszar tematyczny:">
@@ -43,7 +46,9 @@ input#payment, input#startDate {
   <div class="formfield2" data-prop="owner" data-label="Kierownik szkolenia: ">
     <select id="owner" name="owner" data-ng-model="formData.owner" data-ng-required="true" data-ng-options="s for s in dictionaries.sOwners"></select>
   </div>
-  <div class="formfield" data-prop="teacher" data-label="Prowadzący:" data-ng-model="formData.teacher" data-max="70" data-max-info="true"></div>
+  <div class="formfield2" data-prop="teacher" data-label="Prowadzący:" data-ng-model="formData.teacher" data-max="70" data-max-info="true">
+    <input type="text" id="teacher" name="teacher" data-ng-model="formData.teacher" data-ng-trim="true" data-ng-maxlength="max"/>
+  </div>
   <div class="formfield2" data-prop="payment" data-label="Odpłatność:" data-max="10">
     <input type="number" id="payment" name="payment" data-ng-model="formData.payment" data-ng-trim="true" required data-ng-maxlength="10" data-ng-pattern="/^\d*$/" min="0" max="100000"/>
     <span class="vErr" data-ng-show="frm.payment.$error.number || frm.payment.$error.pattern">Podana wartość nie jest liczbą natualną</span>
@@ -80,3 +85,6 @@ input#payment, input#startDate {
   <h3>Podgląd</h3>
   <div class="formtable" data-formdata="formData" data-showdatails="true"></div>
 </div>
+
+<div class="alert alert-error clearBoth" data-ng-show="error">{{error}}</div>
+<div class="alert alert-success clearBoth" data-ng-show="success">{{success}}</div>

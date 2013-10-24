@@ -1,12 +1,12 @@
-<div class="btn-toolbar">
+<div class="btn-toolbar" data-ng-show="user">
   <div class="btn-group">
-    <a class="btn btn-large" href="#/new">Nowa</a>
+    <a class="btn btn-large" href="#/edit/{{formId}}" data-ng-class="{disabled: index < 0}">Edytuj </a>
   </div>
   <div class="btn-group">
-    <a class="btn btn-large" href="#/edit/{{formId}}" data-ng-class="{disabled: index < 0}">Edytuj</a>
+    <a class="btn btn-large btn-danger" data-ng-click="deleteFirst()" data-ng-class="{disabled: index < 0}">Usuń</a>
   </div>
   <div class="btn-group">
-    <a class="btn btn-large btn-danger" data-ng-click="delete()" data-ng-class="{disabled: index < 0}">Usuń</a>
+    <a class="btn btn-large btn-danger" data-ng-click="delete()" data-ng-show="deleteFirstClicked">... i potwierdź :)</a>
   </div>
   <div class="btn-group">
     <a class="btn btn-large" data-ng-click="toggleArea()">{{showdatails &amp;&amp; 'Ukryj' || "Pokaż"}} szczegóły</a>

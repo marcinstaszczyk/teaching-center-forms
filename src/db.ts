@@ -8,6 +8,7 @@ export var sTypes = null;
 export var sOwners = null;
 export var sIndex = null;
 export var CENForm = null;
+export var CENUser = null;
 
 // Callback will be called when done.
 export function init(done) {
@@ -53,6 +54,13 @@ export function init(done) {
       addInfo   : { type: "text", size: 2048 },
       indexMerged:{ type: "text", size: 2048 },
     });
+    
+    CENUser = db.define("cen_user", {
+      name      : { type: "text", size: 255 },
+      login     : { type: "text", size: 255 },
+      password  : { type: "text", size: 1024 },
+      errCount  : { type: "number", rational: false },
+    });
 
     // Make the database.
     sAreas.sync(function(err) {});
@@ -60,6 +68,7 @@ export function init(done) {
     sOwners.sync(function(err) {});
     sIndex.sync(function(err) {});
     CENForm.sync(function(err) {});
+    CENUser.sync(function(err) {});
     
     // Export our object for basic interactions.
     module.exports.sAreas = sAreas;
@@ -67,6 +76,7 @@ export function init(done) {
     module.exports.sOwners = sOwners;
     module.exports.sIndex = sIndex;
     module.exports.CENForm = CENForm;
+    module.exports.CENUser = CENUser;
     
     // We're done.
     done(null);

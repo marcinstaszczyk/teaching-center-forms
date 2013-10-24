@@ -1,4 +1,29 @@
-function ListCtrl ($scope, $http, FormsService) {
+function GlobalCtrl ($scope, $location, LoginService) {
+  LoginService.get(function (resp) {
+    $scope.user = resp.content;  
+  });
+  
+  $scope.loginData = {};
+  $scope.login = function (login, password) {
+    LoginService.save({login: login, password: password}, function (resp) {
+      if (!resp || !resp.code) {
+        $scope.error = resp.err;
+        return;
+      }
+      delete $scope.error;
+      $scope.user = resp.content;  
+      $scope.loginData = {};
+      $location.path('/list');
+    });
+  }
+}
+
+function ListCtrl ($scope, $http, $location, FormsService) {
+  if (!$scope.$parent.user) {
+    $location.path('/login');
+    return;
+  }
+  
   $scope.forms = FormsService.query();
   
   $scope.index = -1;
@@ -6,13 +31,21 @@ function ListCtrl ($scope, $http, FormsService) {
   $scope.showdatails = false;
  
   $scope.select = function (index) {
+    $scope.deleteFirstClicked = false;
     $scope.index = index;
     $scope.formId = $scope.forms[index].id;
+  }
+  $scope.deleteFirst = function() {
+    $scope.deleteFirstClicked = true;
   }
   $scope.delete = function() {
     if ($scope.index > 0 && $scope.formId) {
       FormsService.delete({id: $scope.formId})
-      $scope.forms.splice($scope.index, 1)
+      $scope.forms.splice($scope.index, 1);
+      
+      $scope.deleteFirstClicked = false;
+      $scope.index = -1;
+      $scope.formId = null;
     }
   }
   $scope.toggleArea = function () {
@@ -76,8 +109,12 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
   
   $scope.save = function() {
     if ($scope.frm.$valid) {
-      FormsService.save($scope.formData, function() {//TODO err
-        $location.path('/')
+      FormsService.save($scope.formData, function(resp) {
+        if (!resp || !resp.code) {
+          $scope.error = resp.err;
+          return;
+        }
+        $scope.success = id ? "Forma została zmieniona" : "Forma została dodana";
       });
     } else {
       angular.forEach($scope.frm, function (item) {
@@ -93,9 +130,16 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
 function prepareForm(formData) {
   //przygotowujemy strukrure dany do checkbox-ów z indeksami
   formData.indexMap = {};
+  if (!formData.index) {
+    formData.index = [];
+  }
   if (formData.index) {
     for(var i = 0; i < formData.index.length; ++i) {
       formData.indexMap[formData.index[i]] = true;
     }
   }
 }
+
+/*function emptyArray(item) {
+  if (!item || isAr)
+}*/

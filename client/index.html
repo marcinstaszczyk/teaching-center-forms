@@ -33,8 +33,20 @@
     <a href="/form">Przejdz do wersji nie korzystającej z JavaScript</a>
   </div>
   
-  <div data-ng-view>
-    <!-- partial will go here -->
+  <div data-ng-controller="GlobalCtrl">
+    <div class="btn-toolbar" data-ng-show="user" style="display: none;">
+      Witaj: {{user.name}}
+      <div class="btn-group">
+        <a class="btn btn-large" href="#/">Nowa forma</a>
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-large" href="#/list">Lista form</a>
+      </div>
+    </div>
+  
+    <div data-ng-view>
+      <!-- partial will go here -->
+    </div>
   </div>
 </div>
 

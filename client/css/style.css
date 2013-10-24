@@ -52,6 +52,10 @@ td.vErr {
   padding-top: 7px;
 }
 
+.clearBoth {
+	clear: both;
+}
+
 input.ng-invalid, textarea.ng-invalid, select.ng-invalid {
 	color: red;
 }

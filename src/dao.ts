@@ -136,3 +136,29 @@ function removeForm(id, done) {
     }
   });
 }
+
+var MAX_LOGIN_TRIES = 10;
+export function login(login, hash, done) {
+  db.CENUser.find({login: login}, 1, function (err, users) {
+    if (err) {
+      done(err);
+    } else if (!users || users.length == 0) {
+      done('noUser');//Nie znaleziono użytkownika
+    } else {
+      var user = users[0];
+      if (user.password == hash && user.errCount < MAX_LOGIN_TRIES) {
+        user.errCount = 0;
+        user.save(function (err, item) {
+          item.password = '*********';
+          done(err, item);
+        });
+      } else {
+        user.errCount = user.errCount + 1;
+        user.save(function (err, item) {
+          done((user.errCount > MAX_LOGIN_TRIES ? 'locked' : 'passErr') + (err ? err : ''));
+        });
+      }
+    }
+  });
+}
+

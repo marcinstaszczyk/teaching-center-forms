@@ -23,12 +23,8 @@
     <td colspan="3">{{formdata.target}}</td>
   </tr>
   <tr>
-    <td>Prowadzący</td>
-    <td colspan="3">{{formdata.teacher}}</td>
-  </tr>
-  <tr>
-    <td>Kierownik</td>
-    <td colspan="3">{{formdata.owner}}</td>
+    <td>Kierownik / Prowadzący</td>
+    <td colspan="3">{{formdata.owner}} {{formdata.teacher &amp;&amp; '/' || ''}} {{formdata.teacher}}</td>
   </tr>
   <tr>
     <td>Uwagi</td>
@@ -39,7 +35,7 @@
 <div data-ng-show="showdatails" class="formIndex" style="">
   <span>Indeks:</span> 
   <div class="content">
-    <div data-ng-hide="formdata.index">pusty</div>
+    <div data-ng-hide="formdata.index.length">pusty</div>
     <div data-ng-repeat="i in formdata.index">
       {{i}}
     </div>

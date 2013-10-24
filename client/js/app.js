@@ -2,9 +2,10 @@ var CENForms = angular.module('CENForms', ['ngResource', 'ui.date'])
 
 CENForms.config(function($routeProvider, $locationProvider) {
   $routeProvider
-    .when('/', {controller: ListCtrl, templateUrl: '/partials/list.html'})
+    .when('/', {controller: EditCtrl, templateUrl: '/partials/details.html'})
+    .when('/list', {controller: ListCtrl, templateUrl: '/partials/list.html'})
     .when('/edit/:id', {controller: EditCtrl, templateUrl: '/partials/details.html'})
-    .when('/new', {controller: EditCtrl, templateUrl: '/partials/details.html'})
+    .when('/login', {templateUrl: '/partials/login.html'})
     .otherwise({redirectTo: '/'});
 //  $locationProvider.html5Mode(true)
 })
@@ -16,6 +17,10 @@ CENForms.factory('FormsService', function($resource) {
 
 CENForms.factory('DictionariesService', function($resource) {
   return $resource('/api/dictionaries')
+})
+
+CENForms.factory('LoginService', function($resource) {
+  return $resource('/api/login')
 })
 
 CENForms.directive('formfield', function() {

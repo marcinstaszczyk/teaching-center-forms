@@ -36,12 +36,8 @@
       <td colspan="3">{{target}}</td>
     </tr>
     <tr>
-      <td>Prowadzący</td>
-      <td colspan="3">{{teacher}} TODO łączyć z Kierownikiem jeśli taki sam</td>
-    </tr>
-    <tr>
-      <td>Kierownik</td>
-      <td colspan="3">{{owner}}</td>
+      <td>Kierownik / Prowadzący</td>
+      <td colspan="3">{{owner}} {{#if teacher}}/{{/if}} {{teacher}}</td>
     </tr>
     <tr>
       <td>Uwagi</td>

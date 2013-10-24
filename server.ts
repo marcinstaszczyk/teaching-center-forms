@@ -26,13 +26,9 @@ export function startServer() {
   app.set('port', process.env.PORT || 3000);
   //app.set('port', "3000");
   app.set('views', __dirname + '/views');
-  //app.set('view engine', 'jade');
   
   var exphbs = exphbs({defaultLayout: 'template', helpers: {options_selected : options_selected, radio_checked: radio_checked}});
   app.engine('handlebars', exphbs);
-  
-  var clientDir = path.join(__dirname, 'client');
-  
   app.set('view engine', 'handlebars');
   
   app.use(express.favicon());
@@ -40,7 +36,15 @@ export function startServer() {
   app.use(express.bodyParser());
   app.use(expressValidator());
   app.use(express.methodOverride());
+  app.use(express.cookieParser('sk.djfklsdjfkljsdfjsdfj'));
+  app.use(express.session());
+  /*var getRidOfTypescript : any = express.session;
+  var MemStore = getRidOfTypescript.MemoryStore;
+  app.use(express.session({secret: 'sk.djfklsdjfkljsdfjsdfj', store: MemStore({
+    reapInterval: 60000 * 10
+  })}));*/
   app.use(app.router);
+  var clientDir = path.join(__dirname, 'client');
   app.use(express.static(clientDir));
   
   // development only
@@ -59,6 +63,9 @@ export function startServer() {
   app.del ('/api/forms/:id', api.forms.del)
   
   app.get ('/api/dictionaries', api.dictionaries);
+  
+  app.get ('/api/login', api.login);
+  app.post('/api/login', api.login);
   
   app.get('/', function(req, res) {
     res.sendfile(path.join(clientDir, 'index.html'))

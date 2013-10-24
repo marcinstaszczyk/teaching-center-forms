@@ -8,17 +8,17 @@ export function dictionaries(req, res) {
 };
 
 export var forms = {
-  list: function (req, res) {
+  list: checkAccess(function (req, res) {
     dao.forms.list(function (err, items) {
       res.json(items);
     });
-  },
-  get: function (req, res) {
+  }),
+  get: checkAccess(function (req, res) {
     var id = ~~req.params.id;
     dao.forms.get(id, function (err, item) {
       res.json(formatRespData(err, item));
     });
-  },
+  }),
   post: function (req, res) {
     forms.validate(req, function (errors) {
       if (errors) {
@@ -27,18 +27,21 @@ export var forms = {
         res.send('There have been validation errors: ' + JSON.stringify(errors), 400);
       } else {
         var form = req.body;
+        if (form.id && (!req.session || !req.session.user)) {
+          res.send('Access denied', 403);
+        }
         dao.forms.saveOrUpdate(form, function (err) {
           res.json(formatRespData(err, null));
         });
       }
     });
   },
-  del: function (req, res) {
+  del: checkAccess(function (req, res) {
     var id = ~~req.params.id;
     dao.forms.remove(id, function (err) {
       res.json(formatRespData(err, null));
     });
-  },
+  }),
   
   validate: function (req, result) {
     dao.getDictionaries(function (dicts) {
@@ -91,7 +94,7 @@ export var forms = {
         req.assert('owner', 'Wartość jest niepoprawna').isIn(dicts.sOwners);
       } catch (e) {}
       try {
-        req.assert('teacher', 'Wypłenienie pola jest wymagane').notNull();
+        //req.assert('teacher', 'Wypłenienie pola jest wymagane').notNull();
         req.assert('teacher', 'Pole może mieć maksymalnie 70 znaków').len(0, 70);
       } catch (e) {}
       try {
@@ -105,7 +108,6 @@ export var forms = {
       } catch (e) {}
       try {
         var indexValue = body.index;
-        console.log(indexValue);
         if (indexValue) {
           if (!Array.isArray(indexValue)) {
             indexValue = [indexValue];
@@ -131,7 +133,14 @@ export var forms = {
   },
 }
 
-
+function checkAccess(f) {
+  return function (req, res) {
+    if (!req.session || !req.session.user) {
+      res.send('Access denied', 403);
+    }
+    f(req, res);
+  } 
+}
 
 function formatRespData (err, content) {
   if (err) {
@@ -160,4 +169,36 @@ function addError(req, param, value, msg) {
     req.onErrorCallback(msg);
   }
   return this;
+}
+
+var crypto = require('crypto');
+export function login(req, res) {
+  var login = req.body.login;
+  var password = req.body.password;
+  
+  if (!login) {
+    res.json(formatRespData(null, req.session.user));
+    return;
+  }
+  
+  var hashFunction = crypto.createHash('sha512');
+  hashFunction.update('npSo4AV8j8+qx2AuTHdRyY0' + password);
+  var hash = hashFunction.digest('base64');
+  
+  dao.login(login, hash, function (err, user) {
+    console.log(login + " " + hash + " " + err + " " + JSON.stringify(user));
+    if (err) {
+      if (err == "locked") {
+        res.json(formatRespData('Konto zablokowane', null));
+      } else if (err == 'noUser' || err == 'passErr') {
+        res.json(formatRespData('Błedny login lub hasło', null));
+      } else {
+        res.json(formatRespData('Nieznany błąd przperaszamy', null));
+      }
+      return;
+    }
+     
+    req.session.user = user;
+    res.json(formatRespData(null, user));
+  });
 }
