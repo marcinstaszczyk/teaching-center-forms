@@ -14,7 +14,18 @@ input#payment, input#startDate {
 /*select#type, select#owner {
   width: 300px;
 }*/
+input#uuidToLoad {
+  width: 300px;
+}
 </style>
+
+<div data-ng-hide="user" class="form-horizontal">
+  Aby poprawić już wprowadzoną formę podaj kod: <input id="uuidToLoad" type="text" data-ng-model="uuidToLoad" data-ng-pattern="/^[0-9a-f-]{36}$/"
+  /> i wciśnij <a class="btn btn-primary" data-ng-click="uuidToLoad &amp;&amp; loadForUUID()" data-ng-class="{disabled: !uuidToLoad}">przycisk</a><br/>
+  <br/>
+  <br/>
+  <br/>
+</div>
 
 <div class="alert alert-error" data-ng-show="error">{{error}}</div>
 <div class="alert alert-success" data-ng-show="success">{{success}}</div>
@@ -55,7 +66,7 @@ input#payment, input#startDate {
     <span class="vErr" data-ng-show="frm.payment.$error.max">Max 100000</span>
   </div>
   <div class="formfield2" data-prop="addInfo" data-label="Informacje dodatkowe:" data-max="250">
-    <textarea id="addInfo" name="addInfo" rows="7" data-ng-model="formData.addInfo" data-ng-maxlength="250"></textarea>
+    <textarea id="addInfo" name="addInfo" rows="5" data-ng-model="formData.addInfo" data-ng-maxlength="250"></textarea>
   </div>
   <div class="formfield2" data-prop="payment" data-label="Indeks:">
     <div class="btn-group">

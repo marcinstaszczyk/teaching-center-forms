@@ -49,6 +49,7 @@ export function getDictionaries(done) {
 export var forms = {
   list: formList,
   get: getForm,
+  getByUUID: getFormByUUID,
   saveOrUpdate: saveOrUpdateForm,
   save: save,
   remove: removeForm
@@ -70,9 +71,22 @@ function getForm(id, done) {
   });
 }
 
+function getFormByUUID(uuid, done) {
+  db.CENForm.find({uuid: uuid}, 1, function(err, items) {
+    if (err, !items || items.length == 0) {
+      done(err, null)
+      return;
+    }
+    prepareLoadedData(items[0]);
+    done(err, items[0]);
+  });
+}
+
 function prepareLoadedData(item) {
-  if (item.indexMerged) {
-    item.index = item.indexMerged.split(":;:");
+  if (item) {
+    if (item.indexMerged) {
+      item.index = item.indexMerged.split(":;:");
+    }
   }
 }
 
@@ -87,6 +101,7 @@ function saveOrUpdateForm(form, done) {
       } else {
         copyAndPrepareDataToSave(form, item);
         item.save(function (err, item) {
+          prepareLoadedData(item);
           done(err, item);
         });
       }
@@ -96,8 +111,18 @@ function saveOrUpdateForm(form, done) {
 
 function save(form, done) {
   var item = copyAndPrepareDataToSave(form, {});
+  item.uuid = generateUUID();
+  
   db.CENForm.create(item, function(err, item) {
+    prepareLoadedData(item);
     done(err, item);
+  });
+}
+
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+    return v.toString(16);
   });
 }
 

@@ -18,7 +18,7 @@ function GlobalCtrl ($scope, $location, LoginService) {
   }
 }
 
-function ListCtrl ($scope, $http, $location, FormsService) {
+function ListCtrl ($scope, $location, FormsService) {
   if (!$scope.$parent.user) {
     $location.path('/login');
     return;
@@ -53,10 +53,11 @@ function ListCtrl ($scope, $http, $location, FormsService) {
   }
 }
 
-function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesService) {
-  $scope.showIndex = false;
-  $scope.toggleIndex = function () {
-    $scope.showIndex = !$scope.showIndex;
+function EditCtrl ($scope, $location, $routeParams, $http, FormsService, DictionariesService) {
+  var id = $routeParams.id;
+  if (id && !$scope.$parent.user) {
+    $location.path('/login');
+    return;
   }
   
   var dict = DictionariesService.get(function() {
@@ -80,13 +81,9 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
     maxDate: "+1Y"
   };
   
-  var id = $routeParams.id;
   if (id) {
     FormsService.get({id: id}, function(resp) {
-      $scope.formData = resp.content  
-      if (resp && resp.content && resp.content.startDate) {//konwertujemy po wstawieniu do $scope bo wstawienie wcześniej przerabia Date() na postać "2013-11-21T00:00:00.000Z"
-        $scope.formData.startDate = new Date(resp.content.startDate);
-      }
+      $scope.formData = resp.content;
       prepareForm($scope.formData);
     })
   } else {
@@ -94,6 +91,26 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
     prepareForm($scope.formData);
   }
   
+  $scope.loadForUUID = function() {
+    var uuid = $scope.uuidToLoad;
+    FormsService.get({id: 0, uuid: uuid}, function(resp) {
+      if (resp.code) {
+        delete $scope.error;
+        delete $scope.success;
+        $scope.formData = resp.content;
+        prepareForm($scope.formData);
+      } else {
+        $scope.error = resp.err;
+      }
+    }, function(error) {
+      $scope.error = error.data;
+    });
+  }
+  
+  $scope.showIndex = false;
+  $scope.toggleIndex = function () {
+    $scope.showIndex = !$scope.showIndex;
+  }
   $scope.indexChange = function(indexValue, checked) {
     $scope.formData.indexMap[indexValue] = checked;
     if (checked) {
@@ -109,12 +126,16 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
   
   $scope.save = function() {
     if ($scope.frm.$valid) {
+      var formId = $scope.formData.id;
       FormsService.save($scope.formData, function(resp) {
         if (!resp || !resp.code) {
           $scope.error = resp.err;
           return;
         }
-        $scope.success = id ? "Forma została zmieniona" : "Forma została dodana";
+        $scope.formData = resp.content;
+        prepareForm($scope.formData);
+        
+        $scope.success = formId ? "Forma została zmieniona" : "Forma została dodana. Aby w przyszłości móc poprawić formę proszę zapisać kod: " + resp.content.uuid;
       });
     } else {
       angular.forEach($scope.frm, function (item) {
@@ -128,6 +149,10 @@ function EditCtrl ($scope, $location, $routeParams, FormsService, DictionariesSe
 }
 
 function prepareForm(formData) {
+  if (formData.startDate) {//konwertujemy po wstawieniu do $scope bo wstawienie wcześniej przerabia Date() na postać "2013-11-21T00:00:00.000Z"
+    formData.startDate = new Date(formData.startDate);
+  }
+  
   //przygotowujemy strukrure dany do checkbox-ów z indeksami
   formData.indexMap = {};
   if (!formData.index) {

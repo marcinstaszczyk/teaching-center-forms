@@ -8,16 +8,23 @@ export function dictionaries(req, res) {
 };
 
 export var forms = {
-  list: checkAccess(function (req, res) {
+  list: checkAccess(false, function (req, res) {
     dao.forms.list(function (err, items) {
       res.json(items);
     });
   }),
-  get: checkAccess(function (req, res) {
-    var id = ~~req.params.id;
-    dao.forms.get(id, function (err, item) {
-      res.json(formatRespData(err, item));
-    });
+  get: checkAccess(true, function (req, res) {
+  var uuid = getParam(req, 'uuid');
+    if (uuid) {
+      dao.forms.getByUUID(uuid, function (err, item) {
+        res.json(formatRespData((err ? err : '') + (item ? '' : 'Nie znaleziono formy'), item));
+      });
+    } else {
+      var id = ~~req.params.id;
+      dao.forms.get(id, function (err, item) {
+        res.json(formatRespData(err, item));
+      });
+    }
   }),
   post: function (req, res) {
     forms.validate(req, function (errors) {
@@ -27,16 +34,16 @@ export var forms = {
         res.send('There have been validation errors: ' + JSON.stringify(errors), 400);
       } else {
         var form = req.body;
-        if (form.id && (!req.session || !req.session.user)) {
+        if (form.id && isAccessDenied(req, true)) {
           res.send('Access denied', 403);
         }
-        dao.forms.saveOrUpdate(form, function (err) {
-          res.json(formatRespData(err, null));
+        dao.forms.saveOrUpdate(form, function (err, item) {
+          res.json(formatRespData(err, item));
         });
       }
     });
   },
-  del: checkAccess(function (req, res) {
+  del: checkAccess(false, function (req, res) {
     var id = ~~req.params.id;
     dao.forms.remove(id, function (err) {
       res.json(formatRespData(err, null));
@@ -133,13 +140,21 @@ export var forms = {
   },
 }
 
-function checkAccess(f) {
+function checkAccess(uuidAllowed, f) {
   return function (req, res) {
-    if (!req.session || !req.session.user) {
+    if (isAccessDenied(req, uuidAllowed)) {
       res.send('Access denied', 403);
+    } else {
+      f(req, res);
     }
-    f(req, res);
   } 
+}
+function isAccessDenied(req, uuidAllowed) {
+  return !((uuidAllowed && getParam(req, 'uuid')) || (req.session && req.session.user));
+}
+
+function getParam(req, name) {
+  return req.param[name] || req.query[name] || req.body[name];
 }
 
 function formatRespData (err, content) {

@@ -53,6 +53,7 @@ export function init(done) {
       payment   : { type: "number" },
       addInfo   : { type: "text", size: 2048 },
       indexMerged:{ type: "text", size: 2048 },
+      uuid      : { type: "text", size: 50 },
     });
     
     CENUser = db.define("cen_user", {
