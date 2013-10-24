@@ -83,22 +83,17 @@ function EditCtrl ($scope, $location, $routeParams, $http, FormsService, Diction
   
   if (id) {
     FormsService.get({id: id}, function(resp) {
-      $scope.formData = resp.content;
-      prepareForm($scope.formData);
+      prepareForm($scope, resp.content);
     })
   } else {
-    $scope.formData = {};
-    prepareForm($scope.formData);
+    prepareForm($scope, {});
   }
   
   $scope.loadForUUID = function() {
     var uuid = $scope.uuidToLoad;
     FormsService.get({id: 0, uuid: uuid}, function(resp) {
       if (resp.code) {
-        delete $scope.error;
-        delete $scope.success;
-        $scope.formData = resp.content;
-        prepareForm($scope.formData);
+        prepareForm($scope, resp.content);
       } else {
         $scope.error = resp.err;
       }
@@ -132,10 +127,10 @@ function EditCtrl ($scope, $location, $routeParams, $http, FormsService, Diction
           $scope.error = resp.err;
           return;
         }
-        $scope.formData = resp.content;
-        prepareForm($scope.formData);
+        prepareForm($scope, resp.content);
         
         $scope.success = formId ? "Forma została zmieniona" : "Forma została dodana. Aby w przyszłości móc poprawić formę proszę zapisać kod: " + resp.content.uuid;
+        $scope.enableNewFormButton = true;
       });
     } else {
       angular.forEach($scope.frm, function (item) {
@@ -146,9 +141,25 @@ function EditCtrl ($scope, $location, $routeParams, $http, FormsService, Diction
     }
   }
   
+  $scope.newForm = function() {
+    $scope.frm.$pristine = true;
+    $scope.frm.$dirty = false;
+    angular.forEach($scope.frm, function (item) {
+      item.$dirty = false;
+      item.$pristine = true;
+    });
+    
+    prepareForm($scope, {});
+    delete $scope.enableNewFormButton;
+  }
 }
 
-function prepareForm(formData) {
+function prepareForm($scope, formData) {
+  delete $scope.error;
+  delete $scope.success;
+  
+  $scope.formData = formData;
+  
   if (formData.startDate) {//konwertujemy po wstawieniu do $scope bo wstawienie wcześniej przerabia Date() na postać "2013-11-21T00:00:00.000Z"
     formData.startDate = new Date(formData.startDate);
   }
@@ -164,7 +175,3 @@ function prepareForm(formData) {
     }
   }
 }
-
-/*function emptyArray(item) {
-  if (!item || isAr)
-}*/

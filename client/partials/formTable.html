@@ -4,15 +4,15 @@
 </div>
 <!-- border="1" cellspacing="0" cellpadding="0"  -->
 <table class="forms table table-stripped table-hover table-bordered table-condensed"><tbody>
-  <tr>
+  <tr class="aCenter">
     <td>FD-{{formdata.id}}</td>
-    <td colspan="3">{{formdata.name}}</td>
+    <td colspan="3" class="bold italic">{{formdata.name}}</td>
   </tr>
-  <tr>
-    <td>{{formdata.type}}</td>
+  <tr class="aCenter italic">
+    <td class="bold">{{formdata.type}}</td>
     <td>Liczba godzin dyd.: {{formdata.hours}}</td>
     <td>Termin: {{formdata.startDate | date:'shortDate' }} r.</td>
-    <td>{{formdata.payment | currency:"PLN"}}</td><!-- formatowanie liczby -->
+    <td>{{formdata.payment | currency:"zł"}}</td><!-- formatowanie liczby -->
   </tr>
   <tr>
     <td>Zakres szkolenia</td>
@@ -23,7 +23,7 @@
     <td colspan="3">{{formdata.target}}</td>
   </tr>
   <tr>
-    <td>Kierownik / Prowadzący</td>
+    <td>Kierownik/ Prowadzący</td>
     <td colspan="3">{{formdata.owner}} {{formdata.teacher &amp;&amp; '/' || ''}} {{formdata.teacher}}</td>
   </tr>
   <tr>

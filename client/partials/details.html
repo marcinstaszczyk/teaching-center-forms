@@ -19,6 +19,9 @@ input#uuidToLoad {
 }
 </style>
 
+<h4 style="text-align: center;" data-ng-show="dictionaries.DISPLAY_NAME">{{dictionaries.DISPLAY_NAME}}</h4>
+<p style="text-align: center;" data-ng-show="dictionaries.TEST_INSTANCE_LINK">Przed wpisaniem formy możesz przetestować proces na środowisku <a href="{{dictionaries.TEST_INSTANCE_LINK}}">testowym</a></p>
+
 <div data-ng-hide="user" class="form-horizontal">
   Aby poprawić już wprowadzoną formę podaj kod: <input id="uuidToLoad" type="text" data-ng-model="uuidToLoad" data-ng-pattern="/^[0-9a-f-]{36}$/"
   /> i wciśnij <a class="btn btn-primary" data-ng-click="uuidToLoad &amp;&amp; loadForUUID()" data-ng-class="{disabled: !uuidToLoad}">przycisk</a><br/>
@@ -68,7 +71,7 @@ input#uuidToLoad {
   <div class="formfield2" data-prop="addInfo" data-label="Informacje dodatkowe:" data-max="250">
     <textarea id="addInfo" name="addInfo" rows="5" data-ng-model="formData.addInfo" data-ng-maxlength="250"></textarea>
   </div>
-  <div class="formfield2" data-prop="payment" data-label="Indeks:">
+  <div class="formfield2" data-prop="index" data-label="Indeks:">
     <div class="btn-group">
       <a class="btn" data-ng-click="toggleIndex()">{{showIndex &amp;&amp; 'Ukryj' || "Pokaż"}}</a>
     </div>
@@ -80,7 +83,8 @@ input#uuidToLoad {
   </div>
   <br/>
   <table>
-    <tr><td><a class="btn btn-primary btn-large" data-ng-click="save()" data-ng-class="{disabled: !frm.$valid}">{{formData.id &amp;&amp; 'Aktualizuj' || "Dodaj"}}</a></td>
+    <tr><td><a class="btn btn-primary btn-large" data-ng-click="save()" data-ng-class="{disabled: !frm.$valid}">{{formData.id &amp;&amp; 'Aktualizuj' || "Dodaj"}}</a>
+            <a class="btn btn-large" data-ng-click="newForm()" data-ng-show="enableNewFormButton">Wprowadź nową formę</a></td>
     <td>
       <span data-ng-show="saveTry">
         <span class="vErr" data-ng-show="frm.$pristine">Brak zmian<br/></span>

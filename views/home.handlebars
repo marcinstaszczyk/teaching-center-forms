@@ -23,6 +23,13 @@ td label {
 }
 </style>
 
+{{#if DISPLAY_NAME}}
+  <h4 style="text-align: center;">{{DISPLAY_NAME}}</h4>
+{{/if}}
+{{#if TEST_INSTANCE_LINK}}
+  <p style="text-align: center;">Przed wpisaniem formy możesz przetestować proces na środowisku <a href="{{TEST_INSTANCE_LINK}}">testowym</a></p>
+{{/if}}
+
 <div class="formsContainer" style="float: right;">
   {{#if message}}
     <h2 class="text-success">{{message}}</h2>
@@ -39,7 +46,7 @@ td label {
         <td>{{type}}</td>
         <td>Liczba godzin dyd.: {{hours}}</td>
         <td>Termin: {{startDate}} r.</td>
-        <td>{{payment}} PLN</td><!-- formatowanie liczby -->
+        <td>{{payment}} zł</td><!-- formatowanie liczby -->
       </tr>
       <tr>
         <td>Zakres szkolenia</td>
@@ -50,7 +57,7 @@ td label {
         <td colspan="3">{{target}}</td>
       </tr>
       <tr>
-        <td>Kierownik / Prowadzący</td>
+        <td>Kierownik/ Prowadzący</td>
         <td colspan="3">{{owner}} {{#if teacher}}/{{/if}} {{teacher}}</td>
       </tr>
       <tr>
@@ -65,7 +72,6 @@ td label {
 {{#if error}}
   <p class="text-error">{{error}}</p>
 {{/if}} 
-
 
 <form action="/form" method="POST">
   <table><tbody>

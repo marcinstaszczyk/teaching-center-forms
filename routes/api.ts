@@ -3,6 +3,8 @@ var expressValidator = require('express-validator');
 
 export function dictionaries(req, res) {
   dao.getDictionaries(function (dicts) {
+    dicts.DISPLAY_NAME = process.env.DISPLAY_NAME;
+    dicts.TEST_INSTANCE_LINK = process.env.TEST_INSTANCE_LINK;
     res.json(dicts);
   });
 };

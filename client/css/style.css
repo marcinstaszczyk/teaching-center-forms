@@ -7,6 +7,21 @@ a {
   color: #00B7FF;
 }
 
+.pre {
+  white-space: pre
+}
+.clearBoth {
+	clear: both;
+}
+.bold {
+	font-weight: bold;
+}
+.italic {
+	font-style: italic;
+}
+.aCenter, table tr.aCenter td {
+	text-align: center;
+}
 
 table.table-bordered tr td {
   border-top: 1px solid #DDDDDD;
@@ -19,12 +34,12 @@ table.table-bordered tr td {
   clear: none;
 }
 
-.pre {
-  white-space: pre
-}
 
 table.forms {
 	width: 800px;
+}
+table.forms tr td {
+	width: 200px;
 }
 table.forms tr td:FIRST-CHILD {
   width: 10%;
@@ -50,10 +65,6 @@ div.formIndex:after {
 td.vErr {
   padding-left: 20px;
   padding-top: 7px;
-}
-
-.clearBoth {
-	clear: both;
 }
 
 input.ng-invalid, textarea.ng-invalid, select.ng-invalid {
