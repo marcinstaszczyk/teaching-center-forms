@@ -19,8 +19,8 @@ input#uuidToLoad {
 }
 </style>
 
-<h4 style="text-align: center;" data-ng-show="dictionaries.DISPLAY_NAME">{{dictionaries.DISPLAY_NAME}}</h4>
-<p style="text-align: center;" data-ng-show="dictionaries.TEST_INSTANCE_LINK">Przed wpisaniem formy możesz przetestować proces na środowisku <a href="{{dictionaries.TEST_INSTANCE_LINK}}">testowym</a></p>
+<h2 class="aCenter red" data-ng-show="dictionaries.DISPLAY_NAME">{{dictionaries.DISPLAY_NAME}}</h2>
+<p class="aCenter" data-ng-show="dictionaries.TEST_INSTANCE_LINK">Przed wpisaniem formy możesz przetestować proces na środowisku <a href="{{dictionaries.TEST_INSTANCE_LINK}}">testowym</a></p>
 
 <div data-ng-hide="user" class="form-horizontal">
   Aby poprawić już wprowadzoną formę podaj kod: <input id="uuidToLoad" type="text" data-ng-model="uuidToLoad" data-ng-pattern="/^[0-9a-f-]{36}$/"
