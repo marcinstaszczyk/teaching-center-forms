@@ -1,17 +1,18 @@
-function GlobalCtrl ($scope, $location, LoginService) {
+function GlobalCtrl ($rootScope, $scope, $location, LoginService, AuthService, FlashService) {
   LoginService.get(function (resp) {
-    $scope.user = resp.content;  
+    AuthService.setUser(resp.content);  
   });
   
   $scope.loginData = {};
   $scope.login = function (login, password) {
     LoginService.save({login: login, password: password}, function (resp) {
       if (!resp || !resp.code) {
-        $scope.error = resp.err;
+        FlashService.showError(resp.err);
         return;
       }
-      delete $scope.error;
-      $scope.user = resp.content;  
+      FlashService.cleanMessages();
+      AuthService.setUser(resp.content);
+      
       $scope.loginData = {};
       $location.path('/list');
     });
@@ -19,11 +20,6 @@ function GlobalCtrl ($scope, $location, LoginService) {
 }
 
 function ListCtrl ($scope, $location, FormsService) {
-  if (!$scope.$parent.user) {
-    $location.path('/login');
-    return;
-  }
-  
   $scope.forms = FormsService.query();
   
   $scope.index = -1;
@@ -53,12 +49,8 @@ function ListCtrl ($scope, $location, FormsService) {
   }
 }
 
-function EditCtrl ($scope, $location, $routeParams, $http, FormsService, DictionariesService) {
+function EditCtrl ($scope, $location, $routeParams, $http, FormsService, DictionariesService, FlashService) {
   var id = $routeParams.id;
-  if (id && !$scope.$parent.user) {
-    $location.path('/login');
-    return;
-  }
   
   var dict = DictionariesService.get(function() {
     var areas = [];
@@ -83,17 +75,17 @@ function EditCtrl ($scope, $location, $routeParams, $http, FormsService, Diction
   
   if (id) {
     FormsService.get({id: id}, function(resp) {
-      prepareForm($scope, resp.content);
+      prepareForm($scope, FlashService, resp.content);
     })
   } else {
-    prepareForm($scope, {});
+    prepareForm($scope, FlashService, {});
   }
   
   $scope.loadForUUID = function() {
     var uuid = $scope.uuidToLoad;
     FormsService.get({id: 0, uuid: uuid}, function(resp) {
       if (resp.code) {
-        prepareForm($scope, resp.content);
+        prepareForm($scope, FlashService, resp.content);
       } else {
         $scope.error = resp.err;
       }
@@ -119,6 +111,20 @@ function EditCtrl ($scope, $location, $routeParams, $http, FormsService, Diction
     console.log($scope.frm.index.$error);
   }
   
+  $scope.submit = function() {
+    var formId = $scope.formData.id;
+    FormsService.save($scope.formData, function(resp) {
+      if (!resp || !resp.code) {
+        $scope.error = resp.err;
+        return;
+      }
+      prepareForm($scope, FlashService, resp.content);
+      
+      $scope.success = formId ? "Forma została zmieniona" : "Forma została dodana. Aby w przyszłości móc poprawić formę proszę zapisać kod: " + resp.content.uuid;
+      $scope.enableNewFormButton = true;
+    });
+  }
+  
   $scope.save = function() {
     if ($scope.frm.$valid) {
       var formId = $scope.formData.id;
@@ -127,7 +133,7 @@ function EditCtrl ($scope, $location, $routeParams, $http, FormsService, Diction
           $scope.error = resp.err;
           return;
         }
-        prepareForm($scope, resp.content);
+        prepareForm($scope, FlashService, resp.content);
         
         $scope.success = formId ? "Forma została zmieniona" : "Forma została dodana. Aby w przyszłości móc poprawić formę proszę zapisać kod: " + resp.content.uuid;
         $scope.enableNewFormButton = true;
@@ -149,13 +155,13 @@ function EditCtrl ($scope, $location, $routeParams, $http, FormsService, Diction
       item.$pristine = true;
     });
     
-    prepareForm($scope, {});
+    prepareForm($scope, FlashService, {});
     delete $scope.enableNewFormButton;
   }
 }
 
-function prepareForm($scope, formData) {
-  delete $scope.error;
+function prepareForm($scope, FlashService, formData) {
+  FlashService.cleanMessages();
   delete $scope.success;
   
   $scope.formData = formData;

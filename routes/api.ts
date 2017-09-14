@@ -145,7 +145,7 @@ export var forms = {
 function checkAccess(uuidAllowed, f) {
   return function (req, res) {
     if (isAccessDenied(req, uuidAllowed)) {
-      res.send('Access denied', 403);
+      res.send('Login required', 401);
     } else {
       f(req, res);
     }
@@ -190,13 +190,12 @@ function addError(req, param, value, msg) {
 
 var crypto = require('crypto');
 export function login(req, res) {
-  var login = req.body.login;
-  var password = req.body.password;
-  
-  if (!login) {
+  if (req.method !== 'POST') {
     res.json(formatRespData(null, req.session.user));
     return;
   }
+  var login = req.body.login || '';
+  var password = req.body.password || '';
   
   var hashFunction = crypto.createHash('sha512');
   hashFunction.update('npSo4AV8j8+qx2AuTHdRyY0' + password);

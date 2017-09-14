@@ -1,4 +1,4 @@
-var CENForms = angular.module('CENForms', ['ngResource', 'ngSanitize', 'ui.date'])
+var CENForms = angular.module('CENForms', ['ngResource', 'ngSanitize', 'ui.date', 'global'])
 
 CENForms.config(function($routeProvider, $locationProvider) {
   $routeProvider
@@ -10,6 +10,21 @@ CENForms.config(function($routeProvider, $locationProvider) {
 //  $locationProvider.html5Mode(true)
 })
 
+CENForms.run(function($rootScope, $location, AuthService) {
+  var routesThatRequireAuth = ['/list', '/edit'];
+  
+  $rootScope.$on('$routeChangeStart', function(event, next, current) {
+    var path = $location.path();
+    if (!AuthService.isUserLoggedIn()) {
+      for(var i = 0; i < routesThatRequireAuth.length; ++i) {
+        if (path.startsWith(routesThatRequireAuth[i])) {
+          AuthService.goToLoginPage();
+          break;
+        }
+      }
+    }
+  });
+})
 
 CENForms.factory('FormsService', function($resource) {
   return $resource('/api/forms/:id', {id: '@id'})

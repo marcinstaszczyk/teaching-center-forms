@@ -34,7 +34,7 @@ input#uuidToLoad {
 <div class="alert alert-success" data-ng-show="success">{{success}}</div>
 
 <div style="float: left">
-<form name="frm" class="form-horizontal" novalidate>
+<form name="frm" class="form-horizontal" novalidate data-ngSubmit="submit" >
   <div class="formfield2" data-prop="area" data-label="Obszar tematyczny:">
     <select id="area" name="area" data-ng-model="formData.area" data-ng-required="true" data-ng-options="s.name as s.name group by s.group for s in dictionaries.sAreas"></select>
   </div>
@@ -83,7 +83,9 @@ input#uuidToLoad {
   </div>
   <br/>
   <table>
-    <tr><td><a class="btn btn-primary btn-large" data-ng-click="save()" data-ng-class="{disabled: !frm.$valid}">{{formData.id &amp;&amp; 'Aktualizuj' || "Dodaj"}}</a>
+    <tr><td>
+            <button type="submit" style="display: none;">hidden-submit</button>
+            <a class="btn btn-primary btn-large" data-ng-click="save()" data-ng-class="{disabled: !frm.$valid}">{{formData.id &amp;&amp; 'Aktualizuj' || "Dodaj"}}</a>
             <a class="btn btn-large" data-ng-click="newForm()" data-ng-show="enableNewFormButton">Wprowadź nową formę</a></td>
     <td>
       <span data-ng-show="saveTry">

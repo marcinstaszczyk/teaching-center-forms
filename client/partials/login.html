@@ -1,10 +1,11 @@
 <div class="alert alert-error" data-ng-show="error">{{error}}</div>
-<form name="frm" class="form-horizontal" novalidate>
+<form name="frm" class="form-horizontal" novalidate data-ng-submit="login(data.login, data.password)">
   <div class="formfield" data-prop="login" data-label="Login:" data-ng-model="data.login" data-max="20"></div>
   <div class="formfield2" data-prop="password" data-label="Hasło: " data-max="20">
     <input type="password" id="password" name="password" data-ng-model="data.password"/>
   </div>
   <div class="controls btn-group">
     <a class="btn" data-ng-click="login(data.login, data.password)">Zaloguj</a>
+    <button type="submit" style="display: none;">hidden-submit</button>
   </div>
 </form>
