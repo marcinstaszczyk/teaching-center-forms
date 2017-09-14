@@ -1,7 +1,9 @@
 {
-  "name": "CENFormsNode",
-  "version": "0.0.1",
-  "private": true,
+  "name": "teaching-center-forms",
+  "version": "0.1.0",
+  "description": "App for providing/managing propositions of next year classes",
+  "author": "Marcin Staszczyk",
+  "license": "UNLICENSED",
   "scripts": {
     "start": "supervisor -e ts node app.js",
     "//": ",js,html",
@@ -13,7 +15,7 @@
   },
   "dependencies": {
     "typescript.api": "~0.7.7",
-    "express": "3.4.0",
+    "express": "^3.4.0",
     "express3-handlebars": "~0.5.0",
     "express-validator": "~0.8.0",
     "request": "~2.27.0",
