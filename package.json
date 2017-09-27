@@ -5,7 +5,8 @@
   "author": "Marcin Staszczyk",
   "license": "UNLICENSED",
   "scripts": {
-    "start": "supervisor -e ts node app.js",
+    "start": "node app.js",
+    "dev": "supervisor -e ts node app.js",
     "//": ",js,html",
     "start_old": "node app.js"
   },

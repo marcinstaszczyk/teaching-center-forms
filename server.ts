@@ -15,7 +15,7 @@ export function startServer() {
       path = require('path'),
       exphbs  = require('express3-handlebars'),
       expressValidator = require('express-validator'),
-      reload = require('reload'),
+      //reload = require('reload'),
       api = require("./routes/api"),
       colors = require('colors');
   
@@ -67,9 +67,23 @@ export function startServer() {
   app.get ('/api/login', api.login);
   app.post('/api/login', api.login);
   
-  app.get('/', function(req, res) {
-    res.sendfile(path.join(clientDir, 'index.html'))
-  })
+  function serveIndex(req: ExpressServerRequest, res: ExpressServerResponse) {
+    res.sendfile(path.join(clientDir, 'index.html'));
+  }
+
+  app.get('/', serveIndex);
+  app.get('/login', serveIndex);
+  app.get('/list', serveIndex);
+  app.get('/edit', serveIndex);
+  app.get('/edit/*', serveIndex);
+
+  function serveClient2Index(req: ExpressServerRequest, res: ExpressServerResponse) {
+    res.sendfile(path.join(path.join(clientDir, 'client2'), 'index.html'));
+  }
+  app.get('/client2/login', serveClient2Index);
+  app.get('/client2/list', serveClient2Index);
+  app.get('/client2/edit', serveClient2Index);
+  app.get('/client2/edit/*', serveClient2Index);
     
   // Initialize the database before starting the server.
   db.init(function(err) {//TODO move do DAO
@@ -78,7 +92,7 @@ export function startServer() {
     } else {
       var server = http.createServer(app);
       
-      reload(server, app);
+      //reload(server, app);
       
       server.listen(app.get('port'), function() {
         console.log("Web server listening in %s on port %d", colors.red(process.env.NODE_ENV), app.get('port'));
